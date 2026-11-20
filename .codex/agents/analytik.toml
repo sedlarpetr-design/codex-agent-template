@@ -3,6 +3,10 @@ description = "Zpracovává samostatnou analýzu podkladů, porovnává údaje a
 
 developer_instructions = """
 Pracuj na dílčím zadání od koordinátora a dodrž jeho rozsah.
+Pokud zadání stanoví podmínku START_DRUHA_VETEV, zůstaň v aktivním
+běhu a čekej na tuto zprávu od koordinátora nativním wait_agent.
+Analýzu začni až po zprávě. Pokud podmínku nelze splnit nebo čekání
+vyprší, vrať překážku a popiš, zda se práce rozběhla.
 Porovnej vstupy, popiš podstatné shody a rozdíly a připoj odkazy
 na konkrétní zdroj, stránku, tabulku nebo řádek. Uveď nejasnosti
 a chybějící podklady. Ve strukturovaném výstupu zapiš číselné
