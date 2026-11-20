@@ -10,6 +10,16 @@ Cílové prostředí je Codex CLI na linuxovém serveru. Uživatel ovládá konz
 - Test ochrany zápisu musí na cílovém nebo srovnatelném Linuxu s funkčním `bwrap` spustit skutečný pokus o zápis do dočasného souboru přes sandbox Codexu. Důkaz obsahuje úspěšný kontrolní zápis do fiktivního souboru, odmítnutí uvnitř funkčního sandboxu a shodný obsah nebo otisk souboru před pokusem a po něm. Zkouška samotného Landlocku je samostatný důkaz na úrovni Linuxu.
 - Ke schválení vydání předlož report úplné sady, výsledek kontroly proti schválené baseline CLI a důkazy konzolového běhu i odmítnutí zápisu. Chybějící důkaz zapiš do závěrečného reportu jako otevřené akceptační kritérium.
 
+## Výsledky vydání V1.0.0
+
+[Schválená baseline](../testing/baseline.json) vychází z úplného nativního běhu nad commitem `cc7a7c6` v Codex CLI 0.164.0 s modelem `gpt-6.1-sol`. V tomto běhu prošlo **22 z 22 nativních pokusů** v 16 scénářích. Na stejném commitu prošlo také **17 ze 17 lokálních jednotkových testů**. Release gate nad tímto reportem a schválenou baseline vrátil **`PASS`**. Identifikátor úplného běhu je `20261120T214131Z-789b83a1`.
+
+## Postup pro úsporu limitu
+
+1. Při běžné změně spusť lokální jednotkové testy bez modelu. Kontrolují mimo jiné runner, audit a pravidla release gate.
+2. Při ladění nativního chování spusť přes `--case` jen dotčený scénář. Jeho report uchovej, včetně případného selhání.
+3. Před vydáním spusť celou nativní sadu jednou nad finálním commitem. Pokud některý pokus selže nebo vyžaduje kontrolu, zachovej report a při ladění zopakuj pouze dotčený scénář. Release gate vyhodnoť lokálně nad uloženým reportem a schválenou baseline.
+
 ## Spuštění
 
 Je potřeba Python 3.11 nebo novější, Git a přihlášené Codex CLI. Nativní rozhraní této verze ověřujeme s Codex CLI 0.164.0. Příkazy spusť z kořene projektu.
