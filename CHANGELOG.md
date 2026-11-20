@@ -1,6 +1,9 @@
 # Changelog
 
-## 1.0.0-dev.1
+## 1.0.0 (2026-11-20)
+
+- Vydání pro Codex CLI na linuxovém serveru s obsluhou přes SSH.
+- Přejímka doložila konzolový běh s auditem a odmítnutí skutečného zápisu sandboxem Codexu.
 
 - Izolované scénáře pro koordinátora, analytiky, ověřovatele, opravné cykly a bezpečnostní hranice.
 - Strojově čitelné reporty, samostatný kandidát baseline a deterministická kontrola vydání.
