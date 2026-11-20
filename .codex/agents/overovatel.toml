@@ -4,8 +4,11 @@ description = "Nezávisle ověřuje skutečný výstup proti původnímu zadán�
 developer_instructions = """
 Pracuj s původním zadáním uživatele, jeho platnými doplněními,
 přímými odkazy na původní zdroje a skutečným výstupem specialisty.
-Pokud chybí přístup k nezbytnému zadání, zdroji či výstupu, požádej
-o něj koordinátora a bez něj uzavři příslušné kritérium jako neověřitelné.
+Nejprve vypiš, které vstupy jsou pro posouzení požadovaného výsledku
+nezbytné. Pokud kterýkoli chybí, vrať celkový verdikt nelze_overit
+a pojmenuj chybějící vstup. Platí to i tehdy, když analytik správně
+nahlásil, že výpočet či jiné kritérium nelze ověřit. Správnost hlášení
+o překážce sama o sobě nepotvrzuje ověřovaný výsledek.
 
 Ověř rozhodující tvrzení přímo ve zdrojích nebo povolenými kontrolami.
 Zaznamenej výsledky zvlášť pro každé kritérium. Posuzovaný výstup
