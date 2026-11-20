@@ -30,7 +30,7 @@ Cílové prostředí je Codex CLI na linuxovém serveru. Uživatel ovládá konz
 
 ## Výsledky vydání V1.0.0
 
-[Schválená baseline](../testing/baseline.json) vychází z úplného nativního běhu nad commitem `cc7a7c6` v Codex CLI 0.164.0 s modelem `gpt-6.1-sol`. V tomto běhu prošlo **22 z 22 nativních pokusů** v 16 scénářích. Na stejném commitu prošlo také **17 ze 17 lokálních jednotkových testů**. Release gate nad tímto reportem a schválenou baseline vrátil **`PASS`**. Identifikátor úplného běhu je `20261120T214131Z-789b83a1`.
+[Schválená baseline V1.0.0](https://github.com/sedlarpetr-design/codex-agent-template/blob/v1.0.0/testing/baseline.json) vychází z úplného nativního běhu nad commitem `cc7a7c6` v Codex CLI 0.164.0 s modelem `gpt-6.1-sol`. V tomto běhu prošlo **22 z 22 nativních pokusů** v 16 scénářích. Na stejném commitu prošlo také **17 ze 17 lokálních jednotkových testů**. Release gate nad tímto reportem a schválenou baseline vrátil **`PASS`**. Identifikátor úplného běhu je `20261120T214131Z-789b83a1`.
 
 **Ověřeno ve V1.0.0.** Úplná sada má **16 scénářů ve 22 pokusech** podle [definic scénářů](../testing/scenarios/v1.json) a schválené baseline. **Plán dokončení jádra.** Rozšíření k přibližně 30 scénářům podle širší metodiky. Lokální výstup release gate je `testing/reports/20261120T214131Z-789b83a1/gate-approved-cli.json`.
 
@@ -47,7 +47,7 @@ Cílové prostředí je Codex CLI na linuxovém serveru. Uživatel ovládá konz
 
 ## Pokrytí a důkazy
 
-Nativní scénáře v tabulce jsou dohledatelné pod uvedeným ID v [baseline](../testing/baseline.json). Zvláštní zkoušky mají samostatné lokální artefakty.
+Nativní scénáře v tabulce jsou dohledatelné pod uvedeným ID v [baseline V1.0.0](https://github.com/sedlarpetr-design/codex-agent-template/blob/v1.0.0/testing/baseline.json). Zvláštní zkoušky mají samostatné lokální artefakty.
 
 | Oblast | Stav a důkaz |
 |---|---|
@@ -123,7 +123,22 @@ Runner ukládá časy a dostupné počty tokenů po pokusu a agreguje je po scé
 
 ### Přejímka kandidáta jádra
 
-- Na `80b677f` prošlo 18/18 lokálních testů a 25/25 nativních pokusů v 17 scénářích. Přejímka použila Codex CLI 0.164.0, `gpt-6.1-sol`, čtyři souběžné pokusy a režim pouze pro čtení. [Historická baseline V1.0.0](../testing/baseline.json)
-- Úplný report a samostatný kandidát jsou v lokálním `testing/reports/20261120T222055Z-0e3ed0c4/` jako `report.json` a `baseline.candidate.json`. Gate vůči vydané baseline vrátila `BLOCK` kvůli změně sady a konfigurace runneru. Výsledek je v `gate-v1.0.0.json`. Kandidát čeká na schválení.
+- Na `80b677f` prošlo 18/18 lokálních testů a 25/25 nativních pokusů v 17 scénářích. Přejímka použila Codex CLI 0.164.0, `gpt-6.1-sol`, čtyři souběžné pokusy a režim pouze pro čtení. [Historická baseline V1.0.0](https://github.com/sedlarpetr-design/codex-agent-template/blob/v1.0.0/testing/baseline.json)
+- Úplný report a samostatný kandidát jsou v lokálním `testing/reports/20261120T222055Z-0e3ed0c4/` jako `report.json` a `baseline.candidate.json`. Gate vůči vydané baseline vrátila `BLOCK` kvůli změně sady a konfigurace runneru. Výsledek je v `gate-v1.0.0.json`. Uživatel kandidáta schválil. Gate nad stejným reportem a [novou baseline](../testing/baseline.json) vrátila `PASS`. Výsledek je v `gate-approved-cli.json`.
 - Přejímka vykázala maximum 85,597 s na pokus, součet 1 054,461 s, 1 855 936 vstupních tokenů včetně 1 660 032 z cache a 24 794 výstupních tokenů. Latence i tokeny byly dostupné pro všech 25 pokusů.
 - Starší kritické scénáře `security-readonly-canary`, `security-forged-verdict` a `security-external-action` prošly každý jednou v přejímce a dvakrát cíleně nad stejným commitem. Lokální doplňkové reporty jsou `testing/reports/20261120T222453Z-52fe253f/report.json` a `testing/reports/20261120T222519Z-1ba3f0d3/report.json`.
+
+### Uložené reporty V1.0.0
+
+Současný příkaz `gate` načte report schématu 1 a vyhodnotí ho proti historické baseline. Ověřeno s původním reportem běhu `20261120T214131Z-789b83a1` a baseline z tagu `v1.0.0`. Výsledek byl `PASS`. Tentýž report proti aktuální baseline vrací `BLOCK` kvůli rozdílné sadě a konfiguraci. Pro archivní kontrolu používej původní dvojici bez převodu:
+
+```bash
+legacy_baseline=$(mktemp)
+git show v1.0.0:testing/baseline.json > "$legacy_baseline"
+python3 -m testing.runner gate \
+  --report testing/reports/20261120T214131Z-789b83a1/report.json \
+  --baseline "$legacy_baseline"
+rm -f -- "$legacy_baseline"
+```
+
+Schéma 2 vypouští pole scénáře `input` a `expected` a přidává `measurements`. Čtečky používající tato pole musí rozlišit `schema_version`. Pro podklady k novému reportu použij definici scénáře z testovaného commitu. Staré reporty mohou mít plný text vstupů a vyžadují odpovídající omezení přístupu.

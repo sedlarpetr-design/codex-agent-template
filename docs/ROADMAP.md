@@ -18,7 +18,7 @@ Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-
 
 ### Dokončení jádra
 
-Kandidát pro **1.1.0** rozšiřuje testovací pokrytí a metriky, mění interní formát reportu na schéma 2 a zachovává způsob zadávání úloh v CLI. Nová baseline čeká na schválení. [Výsledky kandidáta](TESTING.md#přejímka-kandidáta-jádra)
+Kandidát pro **1.1.0** rozšiřuje testovací pokrytí a metriky, mění interní formát reportu na schéma 2 a zachovává způsob zadávání úloh v CLI. Baseline jádra je schválená a release gate vrátila `PASS`. Samostatné schválení vydání je otevřené. [Výsledky kandidáta](TESTING.md#přejímka-kandidáta-jádra)
 
 | Úkol | Stav a plán |
 |---|---|
