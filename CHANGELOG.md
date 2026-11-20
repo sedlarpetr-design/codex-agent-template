@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 (2026-11-20)
+
+- Jádro Codex CLI na Linuxu přes SSH. Přejímka prošla 25 z 25 nativních pokusů v 17 scénářích a 18 z 18 lokálních testů.
+- Regresní test chrání projektový audit a reporty před únikem obsahu zadání a chybové diagnostiky. Nové scénáře ověřují pokyn k nepovolené akci v podkladu a oddělené výstupy souběžných analytiků.
+- Report má `schema_version: 2`. Pole `input` a `expected` byla odebrána ze záznamů scénářů. Vstupy a očekávání jsou ve verzovaných definicích scénářů testovaného commitu. Nové pole `measurements` shrnuje latenci a dostupné počty tokenů. Čtečky závislé na těchto polích mají rozlišovat verzi schématu.
+- Report V1.0.0 vyhodnoť bez převodu s baseline z tagu `v1.0.0`. Ulož výstup `git show v1.0.0:testing/baseline.json` do dočasného souboru a předej ho jako `--baseline` příkazu `python3 -m testing.runner gate --report <původní-report> --baseline <historická-baseline>`. [Postup pro uložené reporty](docs/TESTING.md#uložené-reporty-v100)
+- Slack a Teams zůstávají odložené.
+
 ## 1.0.0 (2026-11-20)
 
 - Vydání pro Codex CLI na linuxovém serveru s obsluhou přes SSH.
