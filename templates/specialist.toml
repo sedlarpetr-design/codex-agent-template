@@ -1,0 +1,11 @@
+name = "nahrad_nazvem_role"
+description = "Popiš, kdy má koordinátor tuto roli použít."
+
+developer_instructions = """
+Doplň odpovědnost, hranice úkolu a kritéria kvality specifická pro tuto roli.
+
+Pracuj v rozsahu zadání od koordinátora. Výsledek předej podle
+templates/result.md s ID úkolu a pokusu, stavem, výstupem, důkazy,
+skutečně provedenými kontrolami a případnými překážkami.
+O dalším delegování rozhoduje koordinátor.
+"""

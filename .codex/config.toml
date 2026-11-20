@@ -1,0 +1,4 @@
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 2
+max_depth = 1 # Limit V1. V2 se řídí pravidlem role v AGENTS.md.
