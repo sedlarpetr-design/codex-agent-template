@@ -20,6 +20,10 @@ Při výhradách má koordinátor nejvýše dvě kola oprav. Bez schválení po 
 - [Architektura, roadmapa a zadání pro Codex](docs/Codex_Agent_Platform_architektura_roadmap_a_zadani_pro_Codex.docx)
 - [Testování a release management V1–V2](docs/Codex_Agent_Platform_testovani_a_release_management_V1-V2.docx)
 
+## Testování V1.0
+
+Aktuální pracovní verze je v [VERSION](VERSION). Příkazy pro izolované testy, práci s baseline a vyhodnocení před vydáním jsou v [návodu k testování](docs/TESTING.md). Plán dalších milníků je v [roadmapě](docs/ROADMAP.md).
+
 ## Evidence běhů
 
 Schválené lokální hooky ukládají minimum automaticky do `.runs/<session_id>/audit.jsonl`. Každý záznam obsahuje čas UTC a ID úkolu. Závěrečný záznam obsahuje stav, výsledek ověření, počet oprav a provedené akce podle koordinátora. Záznamy událostí zachycují také vlastní verdikt ověřovatele, start a konec podagentů a názvy nástrojů, pro které Codex hook zavolal. Vyvolání nástroje samo nedokládá úspěch externí akce.
