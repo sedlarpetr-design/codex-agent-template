@@ -156,6 +156,23 @@ def workspace_files(checkout):
     return files
 
 
+def failure_categories(stderr, stdout):
+    # Preserve only fixed labels, never raw diagnostic text or identifiers.
+    event_messages = []
+    for event in json_lines(stdout):
+        if event.get("type") in {"error", "turn.failed"}:
+            event_messages.append(str(event.get("error", event.get("message", ""))))
+    diagnostic = stderr.decode(errors="replace") + " " + " ".join(event_messages)
+    patterns = {
+        "limit služby": r"usage limit|quota|rate.limit|429|capacity",
+        "ověření účtu": r"unauthorized|token expired|authentication failed|\b401\b",
+        "sandbox": r"bwrap|loopback",
+        "připojení": r"failed to send|stream disconnected|timed out",
+        "konfigurace": r"failed to load config",
+    }
+    return [label for label, pattern in patterns.items() if re.search(pattern, diagnostic, re.I)]
+
+
 def run_case(checkout, case, model, timeout):
     began = time.monotonic()
     checkout = checkout.resolve()
@@ -175,16 +192,20 @@ def run_case(checkout, case, model, timeout):
             "codex", "-a", "never", "exec", "--ignore-user-config", "--json", "--color", "never",
             "--sandbox", "read-only", "--model", model, "-c", project_trust(checkout), "-c", trust,
             "-c", 'web_search="disabled"', "-c", "features.shell_tool=false",
-            "-c", 'history.persistence="none"', case["prompt"],
+            "-c", 'history.persistence="none"', case["prompt"] + "\n\nIzolovaný test: používej pouze potřebnou nativní spolupráci Codexu. Nevyhledávej nástroje ani zdroje MCP, ani jejich seznam či šablony. Všechny povolené podklady jsou v zadání.",
         ]
         try:
             result = subprocess.run(command, cwd=checkout, env=env, capture_output=True, timeout=timeout)
-            status, stdout = result.returncode, result.stdout
+            status, stdout, stderr = result.returncode, result.stdout, result.stderr
         except subprocess.TimeoutExpired as exc:
-            status, stdout = 124, exc.stdout or b""
+            status, stdout, stderr = 124, exc.stdout or b"", exc.stderr or b""
         observation["returncode"] = status
         if status:
             observation["error"] = "Kodex překročil časový limit." if status == 124 else f"Kodex skončil kódem {status}."
+        if status:
+            categories = failure_categories(stderr, stdout)
+            if categories:
+                observation["error"] += " Diagnostika: " + ", ".join(categories) + "."
         for event in json_lines(stdout):
             if event.get("type") == "thread.started":
                 observation["session_id"] = event.get("thread_id")
@@ -203,7 +224,9 @@ def run_case(checkout, case, model, timeout):
                 observation["audit"] = list(json_lines(path.read_text(encoding="utf-8")))
                 for row in observation["audit"]:
                     name = row.get("tool_name", "").lower()
-                    if name.startswith(("mcp__", "mcp.", "web_search", "exec_command", "bash")):
+                    if name in {"list_mcp_resources", "list_mcp_resource_templates", "read_mcp_resource"} or name.startswith(
+                        ("mcp__", "mcp.", "web_search", "exec_command", "bash")
+                    ):
                         observation["forbidden"].append(name)
                 observation["analysts"] = analyst_messages(observation["audit"], session_id, env)
     except (ValueError, OSError, queue.Empty, KeyError) as exc:
