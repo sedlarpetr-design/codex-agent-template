@@ -12,10 +12,17 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 
 - Delegování řídí hlavní relace. Podagent předává zjištění, překážky a návrh dalšího kroku koordinátorovi.
 - Nezávislé úkoly deleguj souběžně. Můžeš spustit více instancí stejného profilu pro odlišné vstupy. Každá instance dostane vlastní ID dílčího úkolu a samostatný výstup. Pro současné zápisy má každý soubor jednoho vlastníka.
-- Spusť závislý krok až po získání jeho vstupů. Použij `templates/result.md` pro převzetí výstupu. Před převzetím výstupu od specialisty zadej kontrolu profilu `overovatel`. Pokud jsou oba sloty obsazené, po zaznamenání výstupů ukonči dokončená vlákna, aby se uvolnilo místo pro ověření. Ověřovateli předej posuzovaný výstup, původní kritéria a zdroje. Koordinátor vyhodnotí verdikt a rozhodne o převzetí nebo vrácení k opravě.
-- Neúspěšnou kontrolu vrať s konkrétním nálezem. U dočasného technického selhání můžeš bezpečný krok opakovat nejvýše dvakrát, pokud zadání neurčí jinak. Opakuj dotčenou větev, zachovej její ID a přiděl nové ID pokusu. Chybějící vstup nebo oprávnění nahlas jako překážku. U nejasného výsledku zápisu či odeslání ověř skutečný stav před případným opakováním.
+- Před převzetím delegovaného výstupu zadej kontrolu profilu `overovatel`. Pokud jsou oba sloty obsazené, po zaznamenání výstupů ukonči dokončená vlákna. Ověřovateli předej původní zadání uživatele doslova nebo přímým odkazem, aktuální doplnění zadání, přímý přístup k povoleným původním zdrojům a skutečný výstup specialisty. Vlastní shrnutí označ jako doplněk. Chybějící nezbytný originál předej jako překážku.
+- Delegovaný výstup převezmi po verdiktu `prošlo`. První ověření je před opravami. Po neúspěchu předej konkrétní nález k opravě dotčených částí a znovu je nech ověřit. Na celý úkol jsou nejvýše dvě opravná kola. Pokud ani po druhém ověřovatel výsledek neschválí, předej úkol uživateli s důkazy a důvodem. U chybějícího zdroje či oprávnění, které další pokus nezmění, vrať překážku rovnou.
+- Technické opakování je samostatné. U dočasné technické chyby můžeš bezpečný krok opakovat nejvýše dvakrát, pokud zadání neurčí jinak. Zachovej ID dílčího úkolu a přiděl nové ID pokusu. U nejasného výsledku zápisu či odeslání nejprve ověř skutečný stav.
+
+## Oprávnění
+
+- Ověřovatel posuzuje kvalitu. Oprávnění k úpravě souboru, odeslání nebo nasazení poskytuje schválení uživatele a vynucuje je sandbox, přístupový účet nebo cílová služba. Verdikt ověřovatele oprávnění nemění. Akci dokonči až s platným oprávněním pro konkrétní cíl.
 
 ## Evidence a předání
 
-- U delegovaných běhů zapiš ID běhu, dílčího úkolu a pokusu, ID a roli agenta, stav, důvod opakování či převzetí a odkazy na důkazy. Použij stručný přehled ve finálním výstupu. Pokud zakázka vyžaduje uložený audit a dovoluje zápis, ulož přehled do `.runs/<run_id>/audit.md`. Zápis auditu vede koordinátor.
-- Uveď skutečně provedené kontroly, zbývající překážky a cestu k výstupu. Za převzatý označ výsledek, který splnil kritéria zadání.
+- Každou závěrečnou odpověď hlavní relace zakonči jedním strojově čitelným řádkem pro audit bez formátování Markdown. Příklad: `AUDIT stav=hotovo overeni=proslo opravy=0 akce=delegovani,analyza,overeni`.
+- Hodnoty `stav` jsou `hotovo`, `vraceno`, `blokovano` a `ceka_na_vstup`. Hodnoty `overeni` jsou `proslo`, `neproslo`, `nelze_overit` a `neprovedeno`. Přímou jednoduchou práci bez požadavku na ověřovatele můžeš vykázat jako `hotovo` s `neprovedeno`. Uveď skutečný počet opravných kol od 0 do 2.
+- Do `akce` uveď hodnoty z `cteni,analyza,delegovani,overeni,oprava,priprava_zmeny,zmena_souboru,odeslani,nasazeni` nebo `zadna`. Uveď pouze provedené akce. Ohlášenou změnu či externí operaci vykazuj po doložení jejího provedení.
+- Hooky ukládají minimální audit do `.runs/<session_id>/audit.jsonl`. V chatu uveď provedené kontroly, důkazy, překážky a výstup. Podrobný audit můžeš na požádání uložit do `.runs/<run_id>/audit.md` po schválení zápisu.
