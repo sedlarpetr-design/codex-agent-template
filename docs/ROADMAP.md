@@ -3,8 +3,9 @@
 | Milník | Rozsah |
 |---|---|
 | V1.0 | **Vydaná, ověřeno ve V1.0.0.** Codex CLI na linuxovém serveru ovládaný z mobilu přes SSH. Akceptace zahrnuje konzolový běh se šablonou a auditem, skutečné odmítnutí zápisu sandboxem Codexu, izolované scénáře a schválenou baseline. |
-| V1.1 | Rozšíření testování jádra, kanálový kontrakt a adaptér Slack se schvalováním a kontraktními testy. |
-| V1.2 | Adaptér Teams se stejným kontraktem, identitou a řízením oprávnění. |
+| Dokončení jádra | **Aktuální priorita.** Důvěrnost auditu a reportů, nedůvěryhodné podklady, souběh analytiků a opakovatelnost testů. Verzi určí rozsah skutečných změn. |
+| V1.1 – Slack | **Odloženo.** Kanálový kontrakt a adaptér se schvalováním a kontraktními testy. |
+| V1.2 – Teams | **Odloženo.** Adaptér Teams se stejným kontraktem, identitou a řízením oprávnění. |
 | V2.0 | Firemní instalace, oddělení zákazníků, migrace, návrat, sledování a postupné aktualizace. |
 
 V1.0.0 byla vydaná pro Codex CLI na Linuxu přes SSH. Vydaný commit je `239943b78c71d3b4f5deabe4a306705beffcf19d`. [Tag v1.0.0](https://github.com/sedlarpetr-design/codex-agent-template/tree/v1.0.0)
@@ -15,19 +16,24 @@ Podrobnosti a akceptační podmínky jsou v [architektonické roadmapě](Codex_A
 
 Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-a-důkazy). Níže jsou návrhy změn k samostatné implementaci.
 
-### V1.1 – testování jádra a Slack
+### Dokončení jádra
 
 | Úkol | Stav a plán |
 |---|---|
-| Širší bezpečnostní scénáře | **Částečně pokryto.** V1.0.0 ověřila podvržený verdikt, zakázanou akci a ochranu zápisu. Ve V1.1 rozšiř sadu přibližně na 30 scénářů a přidej různé pokyny vložené do nedůvěryhodných podkladů. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
-| Důvěrnost reportů | **Částečně pokryto.** V1.0.0 omezuje obsah auditu a nativní diagnostiky. Ve V1.1 přidej regresní testy průniku syntetických citlivých údajů do reportů a detailů chyb a podle výsledků uprav jejich ukládání. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
-| Izolace zápisů analytiků | **Částečně pokryto.** V1.0.0 doložila překryv běhů a samostatné výsledky zpráv. Ve V1.1 ověř izolaci zápisů do souborů obou analytiků v rámci jednoho úkolu a případně doplň její vynucení. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
-| Kontrolní sada a limity | **Odloženo do V1.1.** Zaveď oddělenou kontrolní sadu pro přejímku. Z naměřené baseline odvoď pravidla opakování, prahy latence a spotřeby a podmínky vyhodnocení nestability. |
-| Druhý model ověřovatele | **Odloženo do V1.1.** Podle výsledků kontrolní sady posuď, zda druhý model zlepší odhalování chyb a jak ovlivní latenci a náklady. |
+| Širší bezpečnostní scénáře | **Částečně pokryto.** V1.0.0 ověřila podvržený verdikt, zakázanou akci a ochranu zápisu. Při dokončení jádra rozšiř sadu přibližně na 30 scénářů a přidej různé pokyny vložené do nedůvěryhodných podkladů. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Důvěrnost reportů | **Částečně pokryto.** V1.0.0 omezuje obsah auditu a nativní diagnostiky. Při dokončení jádra přidej regresní testy průniku syntetických citlivých údajů do reportů a detailů chyb a podle výsledků uprav jejich ukládání. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Izolace zápisů analytiků | **Částečně pokryto.** V1.0.0 doložila překryv běhů a samostatné výsledky zpráv. Při dokončení jádra ověř izolaci zápisů do souborů obou analytiků v rámci jednoho úkolu a případně doplň její vynucení. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Kontrolní sada a limity | **Naplánováno pro dokončení jádra.** Zaveď oddělenou kontrolní sadu pro přejímku. Z naměřené baseline odvoď pravidla opakování, prahy latence a spotřeby a podmínky vyhodnocení nestability. |
+| Druhý model ověřovatele | **Naplánováno pro dokončení jádra.** Podle výsledků kontrolní sady posuď, zda druhý model zlepší odhalování chyb a jak ovlivní latenci a náklady. |
+
+### V1.1 – Slack (odloženo)
+
+| Úkol | Stav a plán |
+|---|---|
 | Slack – kontrakt a stav | **Odloženo do V1.1.** Zaveď verzovaný kontrakt úkolu a výsledku. Deduplikuj příchozí události a udrž stav úkolů i schválení po restartu. |
 | Slack – limity a schvalování | **Odloženo do V1.1.** Nastav časové a nákladové limity. Popiš a otestuj životní cyklus schválení akcí od žádosti přes rozhodnutí a expiraci po provedení. Oprávnění, povolené nástroje a síťová spojení vynucuj technicky mimo model. |
 
-### V1.2 – Teams
+### V1.2 – Teams (odloženo)
 
 | Úkol | Stav a plán |
 |---|---|
