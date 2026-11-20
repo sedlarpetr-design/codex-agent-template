@@ -6,3 +6,5 @@
 - **Důkazy** — konkrétní místa ve zdrojích nebo protokolech
 - **Provedené kontroly** — co proběhlo a s jakým výsledkem
 - **Překážky a nejasnosti** —
+
+U ověřovacího úkolu doplň verdikt (`prošlo`, `vrátit k opravě` nebo `nelze ověřit`) a výsledek každého kritéria s odkazem na důkaz.

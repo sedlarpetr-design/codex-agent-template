@@ -12,7 +12,7 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 
 - Delegování řídí hlavní relace. Podagent předává zjištění, překážky a návrh dalšího kroku koordinátorovi.
 - Nezávislé úkoly deleguj souběžně. Můžeš spustit více instancí stejného profilu pro odlišné vstupy. Každá instance dostane vlastní ID dílčího úkolu a samostatný výstup. Pro současné zápisy má každý soubor jednoho vlastníka.
-- Spusť závislý krok až po získání jeho vstupů. Použij `templates/result.md` pro převzetí výstupu. Koordinátor ověří rozhodující tvrzení a provedené kontroly proti původnímu zadání. Pokud zadání vyžaduje druhý pohled na analýzu, zadej ho jiné instanci nad původními kritérii a zdroji.
+- Spusť závislý krok až po získání jeho vstupů. Použij `templates/result.md` pro převzetí výstupu. Před převzetím výstupu od specialisty zadej kontrolu profilu `overovatel`. Předej mu posuzovaný výstup, původní kritéria a zdroje. Koordinátor vyhodnotí verdikt a rozhodne o převzetí nebo vrácení k opravě.
 - Neúspěšnou kontrolu vrať s konkrétním nálezem. U dočasného technického selhání můžeš bezpečný krok opakovat nejvýše dvakrát, pokud zadání neurčí jinak. Opakuj dotčenou větev, zachovej její ID a přiděl nové ID pokusu. Chybějící vstup nebo oprávnění nahlas jako překážku. U nejasného výsledku zápisu či odeslání ověř skutečný stav před případným opakováním.
 
 ## Evidence a předání
