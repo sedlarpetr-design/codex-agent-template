@@ -27,7 +27,7 @@ AGENT_FILES = (
     "templates/result.md",
 )
 CASE_ID = re.compile(r"[a-z][a-z0-9_-]*")
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 def json_bytes(value):
@@ -113,6 +113,22 @@ def trial(case, run_number, source, model, timeout):
     }
 
 
+def measurements(attempts):
+    elapsed = [row["elapsed_seconds"] for row in attempts if row.get("elapsed_seconds") is not None]
+    usage = {}
+    for row in attempts:
+        for key, tokens in row.get("usage", {}).items():
+            total = usage.setdefault(key, {"attempts": 0, "tokens": 0})
+            total["attempts"] += 1
+            total["tokens"] += tokens
+    return {
+        "attempts": len(attempts),
+        "latency": {"attempts": len(elapsed), "total_seconds": round(sum(elapsed), 3),
+                    "max_seconds": max(elapsed, default=None)},
+        "usage": usage,
+    }
+
+
 def write_document(path, value):
     with path.open("x", encoding="utf-8") as handle:
         json.dump(value, handle, ensure_ascii=False, indent=2)
@@ -153,7 +169,6 @@ def run_suite(args):
         {
             "id": identity, "category": case["category"], "required": case.get("required", True),
             "critical": case.get("critical", False), "repeats": case["repeats"], "attempts": [],
-            "input": case["prompt"], "expected": case["expected"],
             "scenario_sha256": digest(json_bytes(case)),
         }
         for identity, case in selected.items()
@@ -176,6 +191,8 @@ def run_suite(args):
     for record in records:
         for attempt in record["attempts"]:
             summary[attempt["status"]] += 1
+    for record in records:
+        record["measurements"] = measurements(record["attempts"])
     report = {
         "schema_version": SCHEMA_VERSION,
         "meta": {
@@ -188,6 +205,7 @@ def run_suite(args):
         },
         "scenarios": records,
         "summary": summary,
+        "measurements": measurements([attempt for record in records for attempt in record["attempts"]]),
     }
     report_path = report_dir / "report.json"
     write_document(report_path, report)

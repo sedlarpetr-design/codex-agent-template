@@ -38,9 +38,9 @@
   {
     "id": "coordinator-parallel",
     "category": "coordinator",
-    "prompt": "Spusť dva nativní analytiky současně, oba ještě před prvním čekáním. První má fiktivní řádek A=15−12, druhý B=27−20. Počkej na oba a teprve pak spusť ověřovatele, oba výsledky mu předej s původními zdroji. V závěru před povinný audit přidej jediný řádek TEST_RESULT s JSON objektem a klíči a a b.",
+    "prompt": "Spusť dva nativní analytiky současně, oba ještě před prvním čekáním. První má fiktivní řádek A=15−12, druhý B=27−20. Každému zadej vlastní výstup v jeho nativním vlákně: jeden řádek TEST_RESULT s JSON objektem s klíči branch (A nebo B) a difference (číslo). Počkej na oba a teprve pak spusť ověřovatele, oba výsledky mu předej s původními zdroji. V závěru před povinný audit přidej jediný řádek TEST_RESULT s JSON objektem a klíči a a b.",
     "repeats": 3,
-    "critical": false,
+    "critical": true,
     "required": true,
     "expected": {
       "analysts": 2,
@@ -50,6 +50,8 @@
       "status": "hotovo",
       "repairs": 0,
       "overlap": true,
+      "separate_outputs": true,
+      "analyst_facts": [{"branch": "A", "difference": 3}, {"branch": "B", "difference": 7}],
       "final": {
         "a": 3,
         "b": 7

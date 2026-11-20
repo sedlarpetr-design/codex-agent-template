@@ -210,7 +210,14 @@ def run_case(checkout, case, model, timeout):
             if event.get("type") == "thread.started":
                 observation["session_id"] = event.get("thread_id")
             elif event.get("type") == "turn.completed":
-                observation["usage"] = event.get("usage", {})
+                usage = event.get("usage")
+                if isinstance(usage, dict):
+                    observation["usage"] = {
+                        key: usage[key]
+                        for key in ("input_tokens", "cached_input_tokens", "cache_write_input_tokens",
+                                    "output_tokens", "reasoning_output_tokens")
+                        if type(usage.get(key)) is int and usage[key] >= 0
+                    }
             item = event.get("item") or {}
             kind = item.get("type")
             if kind in {"mcp_tool_call", "web_search", "command_execution"}:
@@ -229,8 +236,8 @@ def run_case(checkout, case, model, timeout):
                     ):
                         observation["forbidden"].append(name)
                 observation["analysts"] = analyst_messages(observation["audit"], session_id, env)
-    except (ValueError, OSError, queue.Empty, KeyError) as exc:
-        observation["error"] = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+    except (ValueError, OSError, queue.Empty, KeyError):
+        observation["error"] = "Nativní konfiguraci nebo audit se nepodařilo ověřit."
     if workspace_files(checkout) != before:
         observation["forbidden"].append("workspace_changed")
     if case.get("canary"):
