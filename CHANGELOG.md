@@ -1,6 +1,6 @@
 # Changelog
 
-## Nevydáno
+## 1.4.0 (2026-11-22)
 
 - Volitelný profil Testera implementace a vzor předání reportu z místní projektové sady.
 
