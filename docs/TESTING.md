@@ -44,7 +44,7 @@ Cílové prostředí je Codex CLI na linuxovém serveru. Uživatel ovládá konz
 | Release gate | `PASS` (0), `BLOCK` (1), `REVIEW` (2) | [Hodnotitelé](../testing/graders.py), [runner](../testing/runner.py) |
 | Projektové kritérium | `SPLNĚNO`, `NESPLNĚNO`, `NEOVĚŘENO` | [Vzor projektového reportu](../templates/project-verification.md) |
 
-**Ověřeno ve V1.0.0** kontrolou implementace číselníků a níže uvedených scénářů a jednotkových testů. Schválený běh obsahuje 22 stavů `PASS`. Chování při záporných výsledcích pokrývají mimo jiné testy release gate.
+**Ve V1.0.0 byly ověřeny číselníky ověřovatele, koordinátora, runneru a release gate** kontrolou implementace a níže uvedených scénářů a jednotkových testů. Schválený běh obsahuje 22 stavů `PASS`. Chování při záporných výsledcích pokrývají mimo jiné testy release gate.
 
 ## Ověřování projektových výstupů
 
@@ -57,7 +57,6 @@ python -X utf8 -m unittest discover -s testing/tests -p test_project_verificatio
 ```
 
 Projektová kritéria mají vlastní číselník. Agentní verdikty, audit, formát reportů runneru a vstupy kontroly vydání nadále používají stávající rozhraní.
-
 
 ## Pokrytí a důkazy
 
