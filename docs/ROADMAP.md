@@ -3,9 +3,10 @@
 | Milník | Rozsah |
 |---|---|
 | V1.0 | **Vydaná, ověřeno ve V1.0.0.** Codex CLI na linuxovém serveru ovládaný z mobilu přes SSH. Akceptace zahrnuje konzolový běh se šablonou a auditem, skutečné odmítnutí zápisu sandboxem Codexu, izolované scénáře a schválenou baseline. |
-| Dokončení jádra | **Aktuální priorita.** Důvěrnost auditu a reportů, nedůvěryhodné podklady, souběh analytiků a opakovatelnost testů. Verzi určí rozsah skutečných změn. |
-| Slack | **Odloženo.** Kanálový kontrakt a adaptér se schvalováním a kontraktními testy. |
-| Teams | **Odloženo.** Adaptér Teams se stejným kontraktem, identitou a řízením oprávnění. |
+| v1.1.0 | **Vydaná.** Dokončení jádra šablony, širší testovací pokrytí, metriky a report schématu 2. |
+| v1.2.0 | **Navrhovaná.** Ověřování projektových výstupů, sedmipoložkový report po kritériích a vzor lokální regrese. |
+| Adaptér Slack | **Odloženo bez přidělené verze.** Kanálový kontrakt a adaptér se schvalováním a kontraktními testy. |
+| Adaptér Teams | **Odloženo bez přidělené verze.** Adaptér Teams se stejným kontraktem, identitou a řízením oprávnění. |
 | V2.0 | Firemní instalace, oddělení zákazníků, migrace, návrat, sledování a postupné aktualizace. |
 
 V1.0.0 byla vydaná pro Codex CLI na Linuxu přes SSH. Vydaný commit je `239943b78c71d3b4f5deabe4a306705beffcf19d`. [Tag v1.0.0](https://github.com/sedlarpetr-design/codex-agent-template/tree/v1.0.0)
@@ -14,33 +15,37 @@ Podrobnosti a akceptační podmínky jsou v [architektonické roadmapě](Codex_A
 
 ## Navazující úkoly
 
-Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-a-důkazy). Níže jsou návrhy změn k samostatné implementaci.
+Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-a-důkazy). Níže je vydaný rozsah jádra, návrh projektového ověřování a plán odložených adaptérů.
 
-### Dokončení jádra
+### Dokončení jádra ve v1.1.0
 
-Kandidát pro **1.1.0** rozšiřuje testovací pokrytí a metriky, mění interní formát reportu na schéma 2 a zachovává způsob zadávání úloh v CLI. Baseline jádra je schválená a release gate vrátila `PASS`. Samostatné schválení vydání je otevřené. [Výsledky kandidáta](TESTING.md#přejímka-kandidáta-jádra)
+Vydaná **v1.1.0** dokončila jádro šablony. Rozšířila testovací pokrytí a metriky, zavedla formát reportu schématu 2 a zachovala způsob zadávání úloh v CLI. Baseline jádra byla schválena a release gate vrátila `PASS`. [Důkazy z přejímky](TESTING.md#přejímka-kandidáta-jádra)
 
 | Úkol | Stav a plán |
 |---|---|
-| Širší bezpečnostní scénáře | **Částečně pokryto.** V1.0.0 ověřila podvržený verdikt, zakázanou akci a ochranu zápisu. Kandidát pokrývá také pokyn k nepovolenému zápisu v nedůvěryhodném podkladu. Další varianty a širší cíl přibližně 30 scénářů zůstávají otevřené. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
-| Důvěrnost reportů | **Částečně pokryto.** V1.0.0 omezuje obsah auditu a nativní diagnostiky. Kandidát opravuje průnik zadání a textu výjimky do reportu a přidává lokální regresi. Důvěrnost mimo projektový audit a reporty je otevřená. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
-| Izolace zápisů analytiků | **Částečně pokryto.** V1.0.0 doložila překryv běhů a samostatné výsledky zpráv. Kandidát ověřuje samostatné nativní výstupy i převzetí obou koordinátorem. Izolace dvou zápisů v režimu s povolenými zápisy zůstává otevřená. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Širší bezpečnostní scénáře | **Částečně pokryto.** V1.0.0 ověřila podvržený verdikt, zakázanou akci a ochranu zápisu. v1.1.0 pokrývá také pokyn k nepovolenému zápisu v nedůvěryhodném podkladu. Další varianty a širší cíl přibližně 30 scénářů zůstávají otevřené. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Důvěrnost reportů | **Částečně pokryto.** V1.0.0 omezuje obsah auditu a nativní diagnostiky. v1.1.0 opravuje průnik zadání a textu výjimky do reportu a přidává lokální regresi. Důvěrnost mimo projektový audit a reporty je otevřená. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
+| Izolace zápisů analytiků | **Částečně pokryto.** V1.0.0 doložila překryv běhů a samostatné výsledky zpráv. v1.1.0 ověřuje samostatné nativní výstupy i převzetí obou koordinátorem. Izolace dvou zápisů v režimu s povolenými zápisy zůstává otevřená. [Důkazy](TESTING.md#pokrytí-a-důkazy) |
 | Kontrolní sada a limity | **Částečně pokryto.** Runner ukládá latenci a dostupné údaje o tokenech. Návrh oddělené kontrolní sady je v dokumentaci testování. Její zavedení a prahy podle více srovnatelných měření zůstávají otevřené. |
-| Druhý model ověřovatele | **Naplánováno pro dokončení jádra.** Podle výsledků kontrolní sady posuď, zda druhý model zlepší odhalování chyb a jak ovlivní latenci a náklady. |
+| Druhý model ověřovatele | **Otevřené rozšíření.** Podle výsledků kontrolní sady posuď, zda druhý model zlepší odhalování chyb a jak ovlivní latenci a náklady. |
 
-### Slack (odloženo)
+### Projektové ověřování v navrhované v1.2.0
 
-| Úkol | Stav a plán |
-|---|---|
-| Slack – kontrakt a stav | **Odloženo do milníku Slack.** Zaveď verzovaný kontrakt úkolu a výsledku. Deduplikuj příchozí události a udrž stav úkolů i schválení po restartu. |
-| Slack – limity a schvalování | **Odloženo do milníku Slack.** Nastav časové a nákladové limity. Popiš a otestuj životní cyklus schválení akcí od žádosti přes rozhodnutí a expiraci po provedení. Oprávnění, povolené nástroje a síťová spojení vynucuj technicky mimo model. |
+Návrh přidává jednotný report pro projektová kritéria, pravidlo pro chybějící důkaz a místní regresní vzor. Adaptéry Slack a Teams zůstávají odložené bez přidělené verze. [Ověřování projektových výstupů](TESTING.md#ověřování-projektových-výstupů)
 
-### Teams (odloženo)
+### Adaptér Slack (odloženo bez přidělené verze)
 
 | Úkol | Stav a plán |
 |---|---|
-| Registrace a tok dat | **Odloženo do milníku Teams.** Ověř registraci integrace, dosažitelnost HTTPS endpointu a tok dat od události přes zpracování po doručení výsledku. Použij verzovaný kontrakt z milníku Slack. |
-| Uzavřené firemní sítě | **Odloženo do milníku Teams.** Posuď samostatnou bránu jako jednu z možností a ověř, jak by ovlivnila dostupnost endpointu a hranice toku dat. |
+| Slack – kontrakt a stav | **Odloženo do milníku Adaptér Slack.** Zaveď verzovaný kontrakt úkolu a výsledku. Deduplikuj příchozí události a udrž stav úkolů i schválení po restartu. |
+| Slack – limity a schvalování | **Odloženo do milníku Adaptér Slack.** Nastav časové a nákladové limity. Popiš a otestuj životní cyklus schválení akcí od žádosti přes rozhodnutí a expiraci po provedení. Oprávnění, povolené nástroje a síťová spojení vynucuj technicky mimo model. |
+
+### Adaptér Teams (odloženo bez přidělené verze)
+
+| Úkol | Stav a plán |
+|---|---|
+| Registrace a tok dat | **Odloženo do milníku Adaptér Teams.** Ověř registraci integrace, dosažitelnost HTTPS endpointu a tok dat od události přes zpracování po doručení výsledku. Použij verzovaný kontrakt z milníku Adaptér Slack. |
+| Uzavřené firemní sítě | **Odloženo do milníku Adaptér Teams.** Posuď samostatnou bránu jako jednu z možností a ověř, jak by ovlivnila dostupnost endpointu a hranice toku dat. |
 
 ### V2.0 – firemní nasazení
 
