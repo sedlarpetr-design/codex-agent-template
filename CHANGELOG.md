@@ -1,5 +1,9 @@
 # Changelog
 
+## Nevydáno
+
+- Volitelný profil Testera implementace a vzor předání reportu z místní projektové sady.
+
 ## 1.3.0 (2026-11-21)
 
 - Volitelný spouštěč a místní kontrola startu bez modelu. Windows používá MXC. Linux a WSL2 používají Bubblewrap.

@@ -77,6 +77,12 @@ Nativní scénáře v tabulce jsou dohledatelné pod uvedeným ID v [baseline V1
 
 Doklad běžné úlohy se šablonou, verdiktem a auditem v konzoli přes SSH je v lokálním `testing/reports/20261120T163132Z-b8b8acda/release-v10-acceptance.json`.
 
+## Interní testy implementace
+
+Projekt určuje příkaz a kritéria své interní sady. Rutinní běh spouští místní runner bez modelu a uloží výsledek včetně testované revize, stavu a dostupných důkazů. U jednoznačně úspěšného běhu stačí programový report.
+
+Pro posouzení selhání nebo neúplných důkazů může projekt převzít [profil Tester implementace](../templates/tester_implementace.toml) do `.codex/agents/tester_implementace.toml`. Projekt potřebuje i společné vzory [výsledku](../templates/result.md) a [ověření projektového výstupu](../templates/project-verification.md). Koordinátor předá jeden konkrétní běh a povolené důkazy podle [vzoru zadání](../templates/implementation-test-assignment.md). Nezávislý Ověřovatel dál posuzuje výstupy specialistů. Skutečné předávání mezi agenty ověřuje nativní sada.
+
 ## Postup pro úsporu limitu
 
 1. **Ověřeno ve V1.0.0.** Při běžné změně spusť lokální [jednotkové testy](../testing/tests/) bez modelu.

@@ -39,3 +39,5 @@ Pokud host dědí vlastní MCP servery, jejich přístup vynucuje správce hostu
 ## Nová implementace na Windows nebo Linuxu
 
 Použij [vzor projektové specifikace](templates/project-spec.md) pro role, čtení PDF a přejímku. Spouštěč `python testing/start_sandbox.py` (na Linuxu `python3`) vybírá MXC na Windows a používá Bubblewrap na Linuxu a WSL2. Kontrolu startu bez modelu spustíš s `--check`. Podmínky hostitele a ověření jsou v [návodu k testování](docs/TESTING.md#přenositelný-sandbox-pro-nové-implementace).
+
+Pro posouzení místních regresí lze přidat [Testera implementace](docs/TESTING.md#interní-testy-implementace).
