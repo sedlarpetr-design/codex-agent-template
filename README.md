@@ -35,3 +35,7 @@ Audit ukládá identifikátory a krátké hodnoty. Text zadání, výstupy model
 Projekt ve výchozím nastavení používá sandbox pouze pro čtení a předává žádosti o rozšíření oprávnění uživateli. Vestavěné aplikace a pluginy jsou ve výchozím projektu vypnuté. Když úkol vyžaduje zápis, odeslání nebo nasazení, musí běžet s oprávněním pro určený cíl. Ověřovatel přitom dál rozhoduje pouze o kvalitě výstupu.
 
 Pokud host dědí vlastní MCP servery, jejich přístup vynucuje správce hostu v `requirements.toml` a cílová služba. Prázdná spravovaná tabulka `[mcp_servers]` servery vypne, případně správce povolí konkrétní server a omezí jeho účet či nástroje. Pro neobcházené omezení sandboxu používej také spravovanou konfiguraci hostu. [Schvalování nástrojů](https://learn.chatgpt.com/docs/agent-approvals-security) · [Spravovaná oprávnění a MCP](https://learn.chatgpt.com/docs/enterprise/security-cookbook#allow-only-approved-mcp-servers)
+
+## Nová implementace na Windows nebo Linuxu
+
+Použij [vzor projektové specifikace](templates/project-spec.md) pro role, čtení PDF a přejímku. Spouštěč `python testing/start_sandbox.py` (na Linuxu `python3`) vybírá MXC na Windows a používá Bubblewrap na Linuxu a WSL2. Kontrolu startu bez modelu spustíš s `--check`. Podmínky hostitele a ověření jsou v [návodu k testování](docs/TESTING.md#přenositelný-sandbox-pro-nové-implementace).

@@ -155,3 +155,12 @@ rm -f -- "$legacy_baseline"
 ```
 
 Schéma 2 vypouští pole scénáře `input` a `expected` a přidává `measurements`. Čtečky používající tato pole musí rozlišit `schema_version`. Pro podklady k novému reportu použij definici scénáře z testovaného commitu. Staré reporty mohou mít plný text vstupů a vyžadují odpovídající omezení přístupu.
+
+## Přenositelný sandbox pro nové implementace
+
+Z kořene projektu spusť `python testing/start_sandbox.py --check`. Na Linuxu použij `python3`. Spouštěč provede krátkou zkoušku bez modelu. Pro běžnou konzoli spusť stejný příkaz bez `--check`. Spouštěč vybere backend podle OS a při neúspěšné kontrole běh zastaví. Hlavní relaci žádá spustit v režimu `read-only` se schvalováním `on-request`. Spravované požadavky hostitele mají přednost.
+
+- **Windows:** spouštěč volí `windows.sandbox="mxc"` jen pro dané spuštění. MXC vyžaduje kompatibilní Windows, CLI a povolení ve spravované konfiguraci. Při `updateRequired` ověř kompatibilitu hostitele. [Oficiální dokumentace Windows a MXC](https://learn.chatgpt.com/docs/windows/windows-sandbox#mxc-compatibility)
+- **Linux a WSL2:** spouštěč vyžaduje `bwrap` v PATH. Nainstaluj balíček `bubblewrap` ze své distribuce, například `sudo apt install bubblewrap` na Debianu či Ubuntu. Při chybě user namespaces zkontroluj podporovaný profil AppArmor pro svou distribuci. [Oficiální dokumentace Linux sandboxu](https://learn.chatgpt.com/docs/sandboxing#prerequisites)
+
+Úspěšný start potvrzuje schopnost spustit příkaz v sandboxu. Přejímka projektu navíc ověří efektivní práva, vypnutou síť podle požadavků projektu, odmítnutí zápisu a čtení PDF přímo v relaci určeného specialisty. Síťová pravidla sandboxu pro příkazy sama neurčují, kam Codex předává obsah modelu nebo jaká práva má samostatný MCP proces. Pro nástroje a data použij [vzor projektové specifikace](../templates/project-spec.md).

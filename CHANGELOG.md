@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (připraveno k vydání)
+
+- Volitelný spouštěč a místní kontrola startu bez modelu. Windows používá MXC. Linux a WSL2 používají Bubblewrap.
+- Vzor projektové specifikace pokrývá role, čtení přiděleného PDF a přejímku oprávnění v cílovém prostředí.
+
 ## 1.2.0 (2026-11-21)
 
 - Jednotný sedmipoložkový report pro ověřování projektových výstupů a vzor lokální regresní kontroly bez modelu.
