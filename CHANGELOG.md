@@ -1,12 +1,9 @@
 # Changelog
 
-## Nevydáno
-
-- Pravidla pro převzetí testovacího modulu, opakované použití důkazů a přenos obecných regresí zpět do šablony.
-
 ## 1.4.0 (2026-11-22)
 
 - Volitelný profil Testera implementace a vzor předání reportu z místní projektové sady.
+- Pravidla pro převzetí testovacího modulu, opakované použití důkazů a přenos obecných regresí zpět do šablony.
 
 ## 1.3.0 (2026-11-21)
 
