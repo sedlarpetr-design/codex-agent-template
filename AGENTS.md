@@ -23,6 +23,7 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 ## Převzetí šablony a testování
 
 - Při převzetí šablony do implementace převezmi i testovací modul. V projektové specifikaci zaznamenej tag a commit šablony, příkaz pro běžné místní testy, příkaz pro cílenou nativní přejímku a umístění důkazů. Pokud je potřeba přizpůsobit profily nebo výstupní kontrakt, uveď zbývající práci a stav ověření.
+- Při povýšení ověř, že místní testovací příkaz funguje a nativní přejímka používá skutečné profily a výstupní kontrakt projektu. Samotná přítomnost runneru zapojení nedokládá. Při předání uveď, co proběhlo, jaké existující důkazy platí a které kroky zůstávají nezapojené nebo neověřené.
 - Před navržením dalších testů zkontroluj existující scénáře a důkazy. Použij platný důkaz, pokud pokrývá stejné kritérium, dotčenou revizi a účinnou konfiguraci. Při změně proveď místní regrese bez modelu a nativní běh zaměř na chování agentů, které změna ovlivňuje.
 - Obecně použitelné regrese nalezené v implementaci přenes do společné šablony se syntetickými vstupy. Projektové testy zachovej pro vlastní obchodní pravidla a integrace. Podrobnosti jsou v [návodu k testování](docs/TESTING.md#převzetí-testovacího-modulu).
 
