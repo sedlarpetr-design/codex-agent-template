@@ -42,8 +42,22 @@ Cílové prostředí je Codex CLI na linuxovém serveru. Uživatel ovládá konz
 | Koordinátor | Závěrečný stav `hotovo`, `vraceno`, `blokovano`, `ceka_na_vstup`. Pole `overeni` může navíc obsahovat `neprovedeno`. | [Instrukce](../AGENTS.md), [auditní parser](../.codex/hooks/audit.py) |
 | Programové hodnocení pokusu | `PASS`, `FAIL`, `REVIEW` | [Hodnotitelé](../testing/graders.py), [runner](../testing/runner.py) |
 | Release gate | `PASS` (0), `BLOCK` (1), `REVIEW` (2) | [Hodnotitelé](../testing/graders.py), [runner](../testing/runner.py) |
+| Projektové kritérium | `SPLNĚNO`, `NESPLNĚNO`, `NEOVĚŘENO` | [Vzor projektového reportu](../templates/project-verification.md) |
 
 **Ověřeno ve V1.0.0** kontrolou implementace číselníků a níže uvedených scénářů a jednotkových testů. Schválený běh obsahuje 22 stavů `PASS`. Chování při záporných výsledcích pokrývají mimo jiné testy release gate.
+
+## Ověřování projektových výstupů
+
+1. V projektové specifikaci stanov ID scénáře, jednotlivá kritéria, očekávané hodnoty a potřebné důkazy.
+2. Podle [vzoru projektového reportu](../templates/project-verification.md) ulož záznam pro každé kritérium. Odkazy uveď tak, aby je Ověřovatel mohl otevřít. Relativní cesty vyhodnocuj vzhledem ke složce reportu.
+3. Pro místní regresi připrav syntetický výstup splňující kritérium, výstup s doloženým porušením a chybějící nebo nedostatečný důkaz. Podle [příkladu testu](../testing/tests/test_project_verification_example.py) ověř verdikt, pozorovanou hodnotu a odkaz. Příklad používá dočasné soubory a standardní knihovnu Pythonu. Spustíš ho bez modelu a sítě:
+
+```text
+python -X utf8 -m unittest discover -s testing/tests -p test_project_verification_example.py -v
+```
+
+Projektová kritéria mají vlastní číselník. Agentní verdikty, audit, formát reportů runneru a vstupy kontroly vydání nadále používají stávající rozhraní.
+
 
 ## Pokrytí a důkazy
 
