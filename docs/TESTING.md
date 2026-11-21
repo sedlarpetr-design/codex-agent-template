@@ -77,6 +77,14 @@ Nativní scénáře v tabulce jsou dohledatelné pod uvedeným ID v [baseline V1
 
 Doklad běžné úlohy se šablonou, verdiktem a auditem v konzoli přes SSH je v lokálním `testing/reports/20261120T163132Z-b8b8acda/release-v10-acceptance.json`.
 
+## Převzetí testovacího modulu
+
+Při zavedení či povýšení společné šablony zahrň kontrolu sandboxu, místní testy společného modulu a cestu pro nativní ověření skutečných projektových rolí. Projekt doplní své scénáře, očekávání a vlastní baseline. Zapiš, co lze spustit, jakým příkazem a které kontroly ještě potřebují přizpůsobení.
+
+Před novým během porovnej jeho účel s existujícími důkazy. Opakuj kontroly dotčené změnou a kroky bez dostatečného důkazu. Běžné regrese spouštěj místně bez modelu. Nativní test použij pro skutečné spuštění profilů, předávání a nezávislé ověření. Rozsah vydávací přejímky určují jeho kritéria.
+
+Pokud implementace odhalí obecnou chybu koordinace, sandboxu, auditu, vyhodnocení nebo ochrany oprávnění, připrav pro zdrojový repozitář šablony malý regresní scénář. Použij syntetické vstupy a zachovej mechanismus chyby, očekávaný výsledek a způsob jeho doložení. Po ověření scénář začleň do společné sady a z projektu odkaž na verzi šablony, která ho obsahuje. Obchodní pravidla a konkrétní integrace nadále testuj v projektu.
+
 ## Interní testy implementace
 
 Projekt určuje příkaz a kritéria své interní sady. Rutinní běh spouští místní runner bez modelu a uloží výsledek včetně testované revize, stavu a dostupných důkazů. U jednoznačně úspěšného běhu stačí programový report.

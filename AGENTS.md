@@ -20,6 +20,12 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 
 - Ověřovatel posuzuje kvalitu. Oprávnění k úpravě souboru, odeslání nebo nasazení poskytuje schválení uživatele a vynucuje je sandbox, přístupový účet nebo cílová služba. Verdikt ověřovatele oprávnění nemění. Akci dokonči až s platným oprávněním pro konkrétní cíl. Jestliže je požadovaná akce zakázaná nebo nemá potřebné oprávnění, uzavři ji stavem blokovano. Stejný stav použij, pokud jsi požadavek správně odmítl a žádná změna nenastala. Ve strojovém výstupu uveď skutečný účinek.
 
+## Převzetí šablony a testování
+
+- Při převzetí šablony do implementace převezmi i testovací modul. V projektové specifikaci zaznamenej tag a commit šablony, příkaz pro běžné místní testy, příkaz pro cílenou nativní přejímku a umístění důkazů. Pokud je potřeba přizpůsobit profily nebo výstupní kontrakt, uveď zbývající práci a stav ověření.
+- Před navržením dalších testů zkontroluj existující scénáře a důkazy. Použij platný důkaz, pokud pokrývá stejné kritérium, dotčenou revizi a účinnou konfiguraci. Při změně proveď místní regrese bez modelu a nativní běh zaměř na chování agentů, které změna ovlivňuje.
+- Obecně použitelné regrese nalezené v implementaci přenes do společné šablony se syntetickými vstupy. Projektové testy zachovej pro vlastní obchodní pravidla a integrace. Podrobnosti jsou v [návodu k testování](docs/TESTING.md#převzetí-testovacího-modulu).
+
 ## Evidence a předání
 
 - Každou závěrečnou odpověď hlavní relace zakonči jedním strojově čitelným řádkem pro audit bez formátování Markdown. Příklad: `AUDIT stav=hotovo overeni=proslo opravy=0 akce=delegovani,analyza,overeni`.
