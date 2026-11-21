@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 (2026-11-21)
+
+- Jednotný sedmipoložkový report pro ověřování projektových výstupů a vzor lokální regresní kontroly bez modelu.
+- Projektové verdikty jsou SPLNĚNO, NESPLNĚNO a NEOVĚŘENO. Chybějící nebo nedostatečný důkaz vede k NEOVĚŘENO.
+- Agentní verdikty, audit, formáty reportů runneru a release gate používají dosavadní rozhraní.
+- Adaptéry Slack a Teams jsou odložené bez přidělené verze.
+
 ## 1.1.0 (2026-11-20)
 
 - Jádro Codex CLI na Linuxu přes SSH. Přejímka prošla 25 z 25 nativních pokusů v 17 scénářích a 18 z 18 lokálních testů.

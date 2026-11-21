@@ -4,7 +4,7 @@
 |---|---|
 | V1.0 | **Vydaná, ověřeno ve V1.0.0.** Codex CLI na linuxovém serveru ovládaný z mobilu přes SSH. Akceptace zahrnuje konzolový běh se šablonou a auditem, skutečné odmítnutí zápisu sandboxem Codexu, izolované scénáře a schválenou baseline. |
 | v1.1.0 | **Vydaná.** Dokončení jádra šablony, širší testovací pokrytí, metriky a report schématu 2. |
-| v1.2.0 | **Navrhovaná.** Ověřování projektových výstupů, sedmipoložkový report po kritériích a vzor lokální regrese. |
+| v1.2.0 | **Vydaná.** Ověřování projektových výstupů, sedmipoložkový report po kritériích a vzor lokální regrese. |
 | Adaptér Slack | **Odloženo bez přidělené verze.** Kanálový kontrakt a adaptér se schvalováním a kontraktními testy. |
 | Adaptér Teams | **Odloženo bez přidělené verze.** Adaptér Teams se stejným kontraktem, identitou a řízením oprávnění. |
 | V2.0 | Firemní instalace, oddělení zákazníků, migrace, návrat, sledování a postupné aktualizace. |
@@ -15,7 +15,7 @@ Podrobnosti a akceptační podmínky jsou v [architektonické roadmapě](Codex_A
 
 ## Navazující úkoly
 
-Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-a-důkazy). Níže je vydaný rozsah jádra, návrh projektového ověřování a plán odložených adaptérů.
+Vydaný rozsah a důkazy V1.0.0 uvádí [přehled pokrytí](TESTING.md#pokrytí-a-důkazy). Níže je vydaný rozsah jádra, projektové ověřování v1.2.0 a plán odložených adaptérů.
 
 ### Dokončení jádra ve v1.1.0
 
@@ -29,9 +29,9 @@ Vydaná **v1.1.0** dokončila jádro šablony. Rozšířila testovací pokrytí 
 | Kontrolní sada a limity | **Částečně pokryto.** Runner ukládá latenci a dostupné údaje o tokenech. Návrh oddělené kontrolní sady je v dokumentaci testování. Její zavedení a prahy podle více srovnatelných měření zůstávají otevřené. |
 | Druhý model ověřovatele | **Otevřené rozšíření.** Podle výsledků kontrolní sady posuď, zda druhý model zlepší odhalování chyb a jak ovlivní latenci a náklady. |
 
-### Projektové ověřování v navrhované v1.2.0
+### Projektové ověřování ve v1.2.0
 
-Návrh přidává jednotný report pro projektová kritéria, pravidlo pro chybějící důkaz a místní regresní vzor. Adaptéry Slack a Teams zůstávají odložené bez přidělené verze. [Ověřování projektových výstupů](TESTING.md#ověřování-projektových-výstupů)
+Vydání přidává jednotný report pro projektová kritéria, pravidlo pro chybějící důkaz a místní regresní vzor. Adaptéry Slack a Teams zůstávají odložené bez přidělené verze. [Ověřování projektových výstupů](TESTING.md#ověřování-projektových-výstupů)
 
 ### Adaptér Slack (odloženo bez přidělené verze)
 
