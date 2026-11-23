@@ -1,6 +1,6 @@
 # Fronta se závislostmi
 
-Položka má stabilní ID, roli, zadání, výstup, podmínku dokončení a seznam závislostí na ověřených výstupech. Jeden řídící proces drží zámek seznamu, role mohou zpracovávat nezávislé položky souběžně.
+Položka má stabilní ID, roli, zadání, výstup, podmínku dokončení a seznam závislostí na ověřených výstupech. Jeden dispečer vybírá jednotlivé položky napříč vstupy. Každá převzatá položka má vlastní zámek a role mohou zpracovávat nezávislé položky souběžně.
 
 1. Před přidělením vynech hotové položky a ověř značku zastavení.
 2. Z připravených položek vybírej podle pořadí seznamu a volných rolí. Počet souběžných úloh nastav podle prostředí.
@@ -14,7 +14,7 @@ Položka má stabilní ID, roli, zadání, výstup, podmínku dokončení a sezn
 
 Návazná položka může být součástí stejného schváleného seznamu nebo může odkazovat na jiný schválený seznam a stabilní ID jeho položky. Report s kladným verdiktem je použitelný i po uzavření seznamu. Blokovaný nebo rozpracovaný podklad udržuje navazující položku ve stavu čekání.
 
-Kapacitu počítej podle právě běžící předávky. Jakmile Knihovník vrátí první zdroj, Koordinátor může přidělit Knihovníkovi další zdroj a první výstup současně předat Ověřovateli. Metodik může pracovat s dříve ověřeným zdrojem. Zámek seznamu chrání jedinečné řízení a samostatný zámek role chrání její kapacitu i mezi seznamy.
+Kapacitu počítej podle právě běžící předávky. Jakmile Knihovník vrátí první zdroj, Koordinátor může přidělit Knihovníkovi další zdroj a první výstup současně předat Ověřovateli. Metodik může pracovat s dříve ověřeným zdrojem. Zámek položky chrání jedinečné převzetí a samostatný zámek role chrání její kapacitu i mezi seznamy.
 
 Příklad `verified_dependencies` načítá stavy odkazovaných původních reportů. Příklad `ready_items` dostává obsazenost právě běžících předávek. Projekt ověřuje skutečné předávky, uvolnění slotu, zápis deníku a obnovu.
 

@@ -44,7 +44,7 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 ## Fronta se závislostmi
 
 - Koordinátor čte připravené položky v pořadí schváleného seznamu. Závislost na ověřeném výstupu čeká na kladný verdikt. Koordinátor mezitím může přidělit jinou připravenou položku.
-- Souběh omez podle prostředí a počtu dostupných specialistů. Jeden řídící proces vlastní seznam, jednotlivé položky mají vlastní stabilní ID, report a kontrolní body. Dvě nezávislé položky s různými rolemi mohou pracovat současně.
+- Souběh omez podle prostředí a počtu dostupných specialistů. Jeden dispečer vybírá napříč schválenými vstupy až při uvolnění role. Položky mají vlastní stabilní ID, report a kontrolní body. Dvě nezávislé položky s různými rolemi mohou pracovat současně.
 - Po zastavení nebo dosažení limitu nepřiděluj další práci. Při obnově načti již uložené výsledky a kladné verdikty. Pokračuj pouze v rozpracovaných položkách a uvolni čekající položky po splnění závislostí.
 - Návrh a místní příklad výběru připravených položek jsou v [šabloně fronty](templates/queue.md).
 
@@ -52,4 +52,4 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 
 - Schválený seznam vymezuje konkrétní vstup práce. Uzavření seznamu ponechá ověřené výstupy dostupné pro další schválené položky. Návaznost mezi seznamy odkazuje na ID původní položky a její aktuální ověřený report.
 - Kapacitu role drž jen po dobu její předávky. Po odevzdání výstupu koordinátor uvolní specialistu a předá výstup Ověřovateli. Zpracování dalšího zdroje, ověřování předchozího výstupu a práce s jiným ověřeným podkladem tak mohou běžet souběžně.
-- Používej oddělené zámky pro řízení seznamu a kapacitu rolí. Uvolnění kapacity role zachová stav původní položky. Kladný verdikt uvolní závislou práci se stejným ID.
+- Používej oddělené zámky pro převzetí položky a kapacitu role. Zpracování položky nesmí zamknout celý vstup. Uvolnění kapacity role zachová stav původní položky. Kladný verdikt uvolní závislou práci se stejným ID.

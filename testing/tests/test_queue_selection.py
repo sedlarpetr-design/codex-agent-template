@@ -70,3 +70,9 @@ class QueueSelectionTests(unittest.TestCase):
                          ["urgent", "older", "same", "later"])
         self.assertEqual([item["id"] for item in ready_items(items, {}, ["b"], 4)],
                          ["older", "same", "later"])
+
+    def test_new_priority_is_considered_when_role_becomes_free(self):
+        older = {"id": "older", "role": "librarian"}
+        newcomer = {"id": "urgent", "role": "librarian", "priorita": 1}
+        self.assertEqual(ready_items([older], {}, ["librarian"], 1), [])
+        self.assertEqual(ready_items([older, newcomer], {}, [], 1), [newcomer])
