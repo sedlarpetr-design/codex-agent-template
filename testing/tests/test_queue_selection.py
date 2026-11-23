@@ -28,3 +28,23 @@ class QueueSelectionTests(unittest.TestCase):
     def test_stop_or_no_capacity_selects_nothing(self):
         self.assertEqual(ready_items(self.items, {}, [], 2, stopped=True), [])
         self.assertEqual(ready_items(self.items, {}, [], 0), [])
+
+    def test_handoff_releases_librarian_during_verification(self):
+        from templates.queue_selection import verified_dependencies
+
+        reports = {("archived-source-list", "verified-source"):
+                   {"overeni": {"verdikt": "SPLNĚNO"}}}
+        states = verified_dependencies({"old-source": ("archived-source-list", "verified-source")}, reports)
+        items = [{"id": "next-source", "role": "librarian"},
+                 {"id": "new-scenario", "role": "methodologist", "zavisi_na": ["old-source"]}]
+        self.assertEqual(ready_items(items, states, ["verifier"], 2), items)
+
+    def test_missing_or_negative_report_cannot_release_followup(self):
+        from templates.queue_selection import verified_dependencies
+
+        items = [{"id": "followup", "role": "methodologist", "zavisi_na": ["source"]},
+                 {"id": "independent", "role": "librarian"}]
+        references = {"source": ("closed-list", "source")}
+        for reports in ({}, {("closed-list", "source"): {"overeni": {"verdikt": "NEOVĚŘENO"}}}):
+            states = verified_dependencies(references, reports)
+            self.assertEqual(ready_items(items, states, [], 2), [items[1]])

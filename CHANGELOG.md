@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.1 (2026-11-23)
+
+- Ověřené výstupy z dokončených seznamů lze použít v nové schválené práci.
+- Kapacita role se uvolní po předávce. Zpracování dalšího zdroje může běžet souběžně s ověřováním předchozího.
+- Dvě místní regrese pokrývají souběh fází a použití kladného verdiktu z jiného seznamu.
+
 ## 1.6.0 (2026-11-23)
 
 - Šablona fronty vybírá připravené položky v pořadí schváleného seznamu. Nezávislé role mohou pracovat souběžně podle kapacity prostředí.
