@@ -16,3 +16,11 @@ def ready_items(items, states, active_roles, capacity, *, stopped=False):
         if len(selected) == capacity:
             break
     return selected
+
+
+def verified_dependencies(references, reports):
+    """Resolve a verdict by (approved list ID, item ID), independent of list state."""
+    return {
+        dependency: reports.get(tuple(reference), {}).get("overeni", {}).get("verdikt")
+        for dependency, reference in references.items()
+    }
