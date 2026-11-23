@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0 (2026-11-23)
+
+- Šablona fronty vybírá připravené položky v pořadí schváleného seznamu. Nezávislé role mohou pracovat souběžně podle kapacity prostředí.
+- Návazná práce se uvolní po kladném verdiktu původní položky. Dokončené úlohy se při obnově znovu nepřidělují.
+- Přenositelný příklad a čtyři místní regresní testy ověřují výběr připravených položek, obsazené role, závislosti a zastavení. Zámky, deník a skutečné spuštění ověřuje cílový projekt.
+
 ## 1.5.0 (2026-11-23)
 
 - Pravidla pro zachování předávek, ověření a auditu při výměně modelu.
