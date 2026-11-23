@@ -1,5 +1,9 @@
 # Changelog
 
+## Nevydané
+
+- Pořadí připravené práce se vyhodnocuje pro každou volnou roli napříč vstupy. Dvě regrese pokrývají přeskočení obsazených rolí a výběr z 1 000 položek.
+
 ## 1.6.1 (2026-11-23)
 
 - Ověřené výstupy z dokončených seznamů lze použít v nové schválené práci.

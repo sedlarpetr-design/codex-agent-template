@@ -17,3 +17,7 @@ Návazná položka může být součástí stejného schváleného seznamu nebo 
 Kapacitu počítej podle právě běžící předávky. Jakmile Knihovník vrátí první zdroj, Koordinátor může přidělit Knihovníkovi další zdroj a první výstup současně předat Ověřovateli. Metodik může pracovat s dříve ověřeným zdrojem. Zámek seznamu chrání jedinečné řízení a samostatný zámek role chrání její kapacitu i mezi seznamy.
 
 Příklad `verified_dependencies` načítá stavy odkazovaných původních reportů. Příklad `ready_items` dostává obsazenost právě běžících předávek. Projekt ověřuje skutečné předávky, uvolnění slotu, zápis deníku a obnovu.
+
+## Výběr práce podle volných rolí
+
+Při každém přidělení projdi připravenou práci od začátku do konce. Položku obsazené role nebo položku čekající na závislost přeskoč. Pro každou volnou roli vyber její nejstarší připravenou položku. Volné role mohou pracovat současně a dokončením vstupního seznamu příjem dalších schválených požadavků nekončí. Pokud implementace zpracovává více vstupů, musí mít pro jejich položky společné pořadí příjmu. Kapacitu rolí vyhodnocuj odděleně od zápisu nových požadavků.
