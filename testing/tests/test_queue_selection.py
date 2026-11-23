@@ -60,3 +60,13 @@ class QueueSelectionTests(unittest.TestCase):
         items = [{"id": number, "role": f"role-{number // 20}"} for number in range(1000)]
         selected = ready_items(items, {}, [], 50)
         self.assertEqual([item["id"] for item in selected], list(range(0, 1000, 20)))
+
+    def test_priority_precedes_arrival_and_default_is_ten(self):
+        items = [{"id": "older", "role": "a"},
+                 {"id": "urgent", "role": "b", "priorita": 1},
+                 {"id": "same", "role": "c", "priorita": 10},
+                 {"id": "later", "role": "d", "priorita": 11}]
+        self.assertEqual([item["id"] for item in ready_items(items, {}, [], 4)],
+                         ["urgent", "older", "same", "later"])
+        self.assertEqual([item["id"] for item in ready_items(items, {}, ["b"], 4)],
+                         ["older", "same", "later"])

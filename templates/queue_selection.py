@@ -6,7 +6,7 @@ def ready_items(items, states, active_roles, capacity, *, stopped=False):
         return []
     occupied = set(active_roles)
     selected = []
-    for item in items:
+    for item in sorted(items, key=lambda item: item.get("priorita", 10)):
         if item["id"] in states or item["role"] in occupied:
             continue
         if any(states.get(key) != "SPLNĚNO" for key in item.get("zavisi_na", [])):

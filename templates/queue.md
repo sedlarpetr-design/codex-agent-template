@@ -21,3 +21,7 @@ Příklad `verified_dependencies` načítá stavy odkazovaných původních repo
 ## Výběr práce podle volných rolí
 
 Při každém přidělení projdi připravenou práci od začátku do konce. Položku obsazené role nebo položku čekající na závislost přeskoč. Pro každou volnou roli vyber její nejstarší připravenou položku. Volné role mohou pracovat současně a dokončením vstupního seznamu příjem dalších schválených požadavků nekončí. Pokud implementace zpracovává více vstupů, musí mít pro jejich položky společné pořadí příjmu. Kapacitu rolí vyhodnocuj odděleně od zápisu nových požadavků.
+
+## Priorita a uživatelská oprava
+
+Priorita je kladné celé číslo s výchozí hodnotou 10. Připravené položky vybírej podle vzestupné priority a při shodě podle pořadí přijetí. Rozpracované položky pokračují. Před zadáním opravy eviduj původní ID, popis chyby a prioritu. Při zahájení opravy zachovej starý report a pokusy v historii. Nový rozpočet pokusů platí pouze pro opravovanou položku.
