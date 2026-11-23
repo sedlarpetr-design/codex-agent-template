@@ -48,3 +48,55 @@ class QueueSelectionTests(unittest.TestCase):
         for reports in ({}, {("closed-list", "source"): {"overeni": {"verdikt": "NEOVĚŘENO"}}}):
             states = verified_dependencies(references, reports)
             self.assertEqual(ready_items(items, states, [], 2), [items[1]])
+
+    def test_scans_past_a_group_of_busy_role_items(self):
+        items = [{"id": number, "role": ("librarian" if number <= 10 else
+                                        "methodologist" if number <= 15 else "ux")}
+                 for number in range(1, 19)]
+        self.assertEqual([item["id"] for item in ready_items(items, {}, [], 3)], [1, 11, 16])
+        self.assertEqual([item["id"] for item in ready_items(items, {}, ["librarian"], 3)], [11, 16])
+
+    def test_selection_scales_with_registered_role_capacity(self):
+        items = [{"id": number, "role": f"role-{number // 20}"} for number in range(1000)]
+        selected = ready_items(items, {}, [], 50)
+        self.assertEqual([item["id"] for item in selected], list(range(0, 1000, 20)))
+
+    def test_priority_precedes_arrival_and_default_is_ten(self):
+        items = [{"id": "older", "role": "a"},
+                 {"id": "urgent", "role": "b", "priorita": 1},
+                 {"id": "same", "role": "c", "priorita": 10},
+                 {"id": "later", "role": "d", "priorita": 11}]
+        self.assertEqual([item["id"] for item in ready_items(items, {}, [], 4)],
+                         ["urgent", "older", "same", "later"])
+        self.assertEqual([item["id"] for item in ready_items(items, {}, ["b"], 4)],
+                         ["older", "same", "later"])
+
+    def test_new_priority_is_considered_when_role_becomes_free(self):
+        older = {"id": "older", "role": "librarian"}
+        newcomer = {"id": "urgent", "role": "librarian", "priorita": 1}
+        self.assertEqual(ready_items([older], {}, ["librarian"], 1), [])
+        self.assertEqual(ready_items([older, newcomer], {}, [], 1), [newcomer])
+
+    def test_shared_queue_admits_new_priority_after_handoff(self):
+        from templates.queue_selection import ready_across_inputs
+
+        older = {"id": "waiting", "role": "librarian"}
+        method = {"id": "method", "role": "methodologist"}
+        urgent = {"id": "urgent", "role": "librarian", "priorita": 1}
+        original = [("first", [older]), ("second", [method])]
+        self.assertEqual(ready_across_inputs(original, {}, set(), {"librarian"}, 2),
+                         [("second", method)])
+        self.assertEqual(ready_across_inputs(original + [("new", [urgent])], {},
+                                              {("second", "method")}, set(), 2),
+                         [("new", urgent)])
+
+    def test_closed_input_report_releases_followup_and_ids_are_namespaced(self):
+        from templates.queue_selection import ready_across_inputs
+
+        first = {"id": "same", "role": "methodologist",
+                 "zavisi_na_starsich_vstupech": [("closed", "source")]}
+        second = {"id": "same", "role": "librarian"}
+        inputs = [("a", [first]), ("b", [second])]
+        self.assertEqual(ready_across_inputs(inputs, {}, set(), set(), 2), [("b", second)])
+        states = {("closed", "source"): "SPLNĚNO", ("b", "same"): "SPLNĚNO"}
+        self.assertEqual(ready_across_inputs(inputs, states, set(), set(), 2), [("a", first)])

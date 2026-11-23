@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.2 (2026-11-23)
+
+- Koordinátor vybírá jednotlivé připravené položky napříč schválenými vstupy při uvolnění role. Převzetí chrání zámek položky.
+- Výchozí priorita je 10. Nižší číslo má přednost a při shodě rozhoduje pořadí přijetí. Nová prioritní položka nepřerušuje rozpracovanou práci.
+- Uživatelská oprava zachová původní ID a historii. Rozpočet pokusů se obnoví pouze u opravované položky.
+- Přenositelný příklad a místní regrese pokrývají pozdě přijatou prioritu, výběr z 1 000 položek, ochranu proti dvojímu převzetí a využití ověřeného výsledku z uzavřeného vstupu.
+
 ## 1.6.1 (2026-11-23)
 
 - Ověřené výstupy z dokončených seznamů lze použít v nové schválené práci.
