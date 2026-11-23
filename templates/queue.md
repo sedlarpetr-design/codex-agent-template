@@ -25,3 +25,7 @@ Při každém přidělení projdi připravenou práci od začátku do konce. Pol
 ## Priorita a uživatelská oprava
 
 Priorita je kladné celé číslo s výchozí hodnotou 10. Připravené položky vybírej podle vzestupné priority a při shodě podle pořadí přijetí. Rozpracované položky pokračují. Před zadáním opravy eviduj původní ID, popis chyby a prioritu. Při zahájení opravy zachovej starý report a pokusy v historii. Nový rozpočet pokusů platí pouze pro opravovanou položku.
+
+## Společný výběr pro místního hlídače
+
+Funkce `ready_across_inputs` přijímá aktuální schválené vstupy v trvale evidovaném pořadí přijetí. Položky identifikuje dvojice ID vstupu a ID položky. Načti vstupy při novém výběru po uvolnění role. Ulož jen převzetí konkrétní položky, připravené položky nerezervuj předem. Další vstup může přijít mezi dvěma předávkami. Ověřené výsledky uzavřených vstupů zůstávají dostupné v mapě stavů. Hlídač projektu obstarává ukládání, krátké zamknutí převzetí a sledování kapacity.

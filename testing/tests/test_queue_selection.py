@@ -76,3 +76,27 @@ class QueueSelectionTests(unittest.TestCase):
         newcomer = {"id": "urgent", "role": "librarian", "priorita": 1}
         self.assertEqual(ready_items([older], {}, ["librarian"], 1), [])
         self.assertEqual(ready_items([older, newcomer], {}, [], 1), [newcomer])
+
+    def test_shared_queue_admits_new_priority_after_handoff(self):
+        from templates.queue_selection import ready_across_inputs
+
+        older = {"id": "waiting", "role": "librarian"}
+        method = {"id": "method", "role": "methodologist"}
+        urgent = {"id": "urgent", "role": "librarian", "priorita": 1}
+        original = [("first", [older]), ("second", [method])]
+        self.assertEqual(ready_across_inputs(original, {}, set(), {"librarian"}, 2),
+                         [("second", method)])
+        self.assertEqual(ready_across_inputs(original + [("new", [urgent])], {},
+                                              {("second", "method")}, set(), 2),
+                         [("new", urgent)])
+
+    def test_closed_input_report_releases_followup_and_ids_are_namespaced(self):
+        from templates.queue_selection import ready_across_inputs
+
+        first = {"id": "same", "role": "methodologist",
+                 "zavisi_na_starsich_vstupech": [("closed", "source")]}
+        second = {"id": "same", "role": "librarian"}
+        inputs = [("a", [first]), ("b", [second])]
+        self.assertEqual(ready_across_inputs(inputs, {}, set(), set(), 2), [("b", second)])
+        states = {("closed", "source"): "SPLNĚNO", ("b", "same"): "SPLNĚNO"}
+        self.assertEqual(ready_across_inputs(inputs, states, set(), set(), 2), [("a", first)])
