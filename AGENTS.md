@@ -40,3 +40,10 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 - Koordinátor zapisuje do deníku převzetí, předávku, výsledek, překážku, opravu a dokončení. Hlášení do hlavního chatu lze konfigurovat samostatně. Změna nastavení hlášení zachová zápis do deníku.
 - Po zastavení, restartu nebo vyčerpání limitu pokračuj se stejným schváleným zadáním od posledního trvale uloženého kroku. Před obnovou ověř, že stejný úkol právě neběží a výsledek ještě není hotový. Výslovné zastavení vyžaduje pokyn k pokračování. Spotřebované schválení ani již provedený vnější účinek se při obnově nepoužije znovu.
 - Návazný specialista dostane původní důkazy spolu s výstupem po kladném ověření. Při opravě odděl chybějící důkaz od doloženého rozporu a znovu ověř pouze dotčené položky spolu s kritérii, která na nich závisejí.
+
+## Fronta se závislostmi
+
+- Koordinátor čte připravené položky v pořadí schváleného seznamu. Závislost na ověřeném výstupu čeká na kladný verdikt. Koordinátor mezitím může přidělit jinou připravenou položku.
+- Souběh omez podle prostředí a počtu dostupných specialistů. Jeden řídící proces vlastní seznam, jednotlivé položky mají vlastní stabilní ID, report a kontrolní body. Dvě nezávislé položky s různými rolemi mohou pracovat současně.
+- Po zastavení nebo dosažení limitu nepřiděluj další práci. Při obnově načti již uložené výsledky a kladné verdikty. Pokračuj pouze v rozpracovaných položkách a uvolni čekající položky po splnění závislostí.
+- Návrh a místní příklad výběru připravených položek jsou v [šabloně fronty](templates/queue.md).
