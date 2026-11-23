@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0 (2026-11-23)
+
+- Pravidla pro zachování předávek, ověření a auditu při výměně modelu.
+- Evidence kroků, samostatně konfigurovatelné hlášení a obnova od potvrzeného kroku.
+- Předání původních důkazů a opětovné ověření dotčených položek.
+
 ## 1.4.0 (2026-11-22)
 
 - Volitelný profil Testera implementace a vzor předání reportu z místní projektové sady.

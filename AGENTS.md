@@ -33,3 +33,10 @@ Hlavní relace Codexu koordinuje práci a předává uživateli společný výsl
 - Hodnoty `stav` jsou `hotovo`, `vraceno`, `blokovano` a `ceka_na_vstup`. Hodnoty `overeni` jsou `proslo`, `neproslo`, `nelze_overit` a `neprovedeno`. Přímou jednoduchou práci bez požadavku na ověřovatele můžeš vykázat jako `hotovo` s `neprovedeno`. Uveď skutečný počet opravných kol od 0 do 2.
 - Do `akce` uveď hodnoty z `cteni,analyza,delegovani,overeni,oprava,priprava_zmeny,zmena_souboru,odeslani,nasazeni` nebo `zadna`. Uveď pouze provedené akce. Ohlášenou změnu či externí operaci vykazuj po doložení jejího provedení.
 - Hooky ukládají minimální audit do `.runs/<session_id>/audit.jsonl`. V chatu uveď provedené kontroly, důkazy, překážky a výstup. Podrobný audit můžeš na požádání uložit do `.runs/<run_id>/audit.md` po schválení zápisu.
+
+## Přenositelnost modelu a obnova práce
+
+- Změna poskytovatele nebo modelu zachová role, předávky, výstupní kontrakty, rozhodování o opravách a evidenci auditu. Volbu modelu drž v adaptéru. Při přejímce pokryj stejnou předávku dvěma modely nebo řízenými odpověďmi adaptérů.
+- Koordinátor zapisuje do deníku převzetí, předávku, výsledek, překážku, opravu a dokončení. Hlášení do hlavního chatu lze konfigurovat samostatně. Změna nastavení hlášení zachová zápis do deníku.
+- Po zastavení, restartu nebo vyčerpání limitu pokračuj se stejným schváleným zadáním od posledního trvale uloženého kroku. Před obnovou ověř, že stejný úkol právě neběží a výsledek ještě není hotový. Výslovné zastavení vyžaduje pokyn k pokračování. Spotřebované schválení ani již provedený vnější účinek se při obnově nepoužije znovu.
+- Návazný specialista dostane původní důkazy spolu s výstupem po kladném ověření. Při opravě odděl chybějící důkaz od doloženého rozporu a znovu ověř pouze dotčené položky spolu s kritérii, která na nich závisejí.
