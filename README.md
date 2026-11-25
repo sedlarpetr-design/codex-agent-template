@@ -1,43 +1,63 @@
-# Šablona týmu Codex agentů
+# Univerzální multi-agentní šablona
 
-Univerzální základ pro jednu hlavní relaci Codexu a projektové specialisty. Profil `analytik` porovnává podklady a dokládá zjištění. Profil `overovatel` dostává původní zadání, zdroje a skutečný výstup. Koordinátor může současně spustit až dva podagenty včetně dvou instancí téže role.
+Platformově nezávislé jádro multi-agentních workflow s deterministickou
+SQLite frontou, strukturovanými obálkami, nezávislým ověřováním a bezpečnou
+syntézou. Aktuální verze je **2.0.0**; společná pravidla jsou v
+[templates/CORE_RULES.md](templates/CORE_RULES.md), implementační požadavky v
+[specifikaci V2](docs/SPECIFICATION_V2.md).
 
-## Rychlý start
+## Struktura
 
-1. Otevři repozitář v Codexu jako důvěryhodný projekt. Pro ukládání auditu na místním hostu je potřeba `python3` a schválené [projektové hooky](.codex/hooks.json). V terminálu je zkontroluješ a schválíš přes `/hooks`.
-2. Napiš nebo nadiktuj úkol hlavní relaci. Pro strukturované zadání použij [šablonu úkolu](templates/task.md).
-3. Výběr specialisty můžeš říct přímo. Koordinátor předá práci podle [dílčího zadání](templates/assignment.md) a převezme ji podle [šablony výsledku](templates/result.md).
+- `core/` — obálky se `schema_version`, stavový automat fronty, ověřovatel a
+  syntetizátor bez závislosti na konkrétním AI runtime.
+- `specialists/` — adaptéry pro kontrolu souborů, účetní výpočty a webové
+  scénáře přes Playwright (Chromium nebo Firefox).
+- `templates/CORE_RULES.md` — společné kontrakty `TaskEnvelope`,
+  `ResultEnvelope`, `Verdict`, `Deliverable`, důkazy a audit.
+- `AGENTS.md`, `.codex/` — adaptér pro Codex; `CLAUDE.md` a `adapters/`
+  obsahují adaptéry pro Claude, Antigravity a lokální Ollamu.
+- `testing/` — lokální regresní a přejímací testy.
 
-Příklad zadání v jednom chatu:
+## Základní kontrakty
 
-> Spusť souběžně dvě instance profilu analytik. První ať vypočte rozdíl mezi 15 a 12, druhá mezi 27 a 20. Předej oba výsledky ověřovateli spolu s tímto zadáním, ať výpočty přepočítá. Uveď, která dvojice má větší rozdíl, a připoj jeho verdikt.
+Každá obálka nese `schema_version`, identifikátory úkolu/kroku a číslo pokusu.
+Evidence používá kanonické reference `<step_id>#<index>`. Ověřovatel vydává
+výhradně `SPLNĚNO`, `NESPLNĚNO` nebo `NEOVĚŘENO`; chybějící důkaz nikdy
+neznamená úspěch. Opravný cyklus má nejvýše dvě věcná kola. Syntéza používá
+jen schválené výstupy a při neúspěchu vrací strukturovaný fallback.
 
-Při výhradách má koordinátor nejvýše dvě kola oprav. Bez schválení po druhém kole vrátí úkol uživateli s důvodem. Další roli vytvoř z [profilu specialisty](templates/specialist.toml), přejmenuj pole `name` a ulož profil do `.codex/agents/`.
+## Spuštění a testování
 
-## Projektové dokumenty
+Vyžaduje se Python 3.10+ (doporučeno 3.11+). Jádro používá pouze standardní
+knihovnu Pythonu; Playwright je volitelný a potřebný jen pro `web_test`.
+Z kořene repozitáře spusť:
 
-- [Implementace a testování V1.0](docs/Codex_implementace_testovani_V1_0.docx)
-- [Architektura, roadmapa a zadání pro Codex](docs/Codex_Agent_Platform_architektura_roadmap_a_zadani_pro_Codex.docx)
-- [Testování a release management V1–V2](docs/Codex_Agent_Platform_testovani_a_release_management_V1-V2.docx)
+```text
+python -X utf8 -m unittest discover -s testing/tests -v
+```
 
-## Testování V1.0
+Kompletní strukturu testů, pokrytí kritérií a nativní přejímku popisuje
+[docs/TESTING.md](docs/TESTING.md). Testy fronty a verifieru běží lokálně bez
+modelu, sítě ani AI CLI.
 
-Aktuální pracovní verze je v [VERSION](VERSION). Příkazy pro izolované testy, práci s baseline a vyhodnocení před vydáním jsou v [návodu k testování](docs/TESTING.md). Plán dalších milníků je v [roadmapě](docs/ROADMAP.md).
+## Runtime adaptéry
 
-## Evidence běhů
+- **Codex:** otevři repozitář a řiď se [AGENTS.md](AGENTS.md); hooky a profily
+  jsou v `.codex/`; přehled adaptéru je v [adapters/codex/](adapters/codex/).
+  Výchozí sandbox zůstává pouze pro čtení.
+- **Claude / Claude Code:** viz [CLAUDE.md](CLAUDE.md) a
+  [adapters/claude/](adapters/claude/).
+- **Antigravity:** viz [ANTIGRAVITY.md](adapters/antigravity/ANTIGRAVITY.md).
+- **Lokální Ollama (~10 GB):** konzervativní výchozí nastavení je v
+  [config.yaml](adapters/local_ollama/config.yaml); spusť
+  `python adapters/local_ollama/run.py`.
 
-Schválené lokální hooky ukládají minimum automaticky do `.runs/<session_id>/audit.jsonl`. Každý záznam obsahuje čas UTC a ID úkolu. Závěrečný záznam obsahuje stav, výsledek ověření, počet oprav a provedené akce podle koordinátora. Záznamy událostí zachycují také vlastní verdikt ověřovatele, start a konec podagentů a názvy nástrojů, pro které Codex hook zavolal. Vyvolání nástroje samo nedokládá úspěch externí akce.
+Runtime určuje dostupné nástroje a oprávnění, nikoli význam obálek nebo
+verdiktů. Zápis a vnější akce vyžadují oprávnění hostitele a nesmějí být
+odvozovány z verdiktu kvality.
 
-Audit ukládá identifikátory a krátké hodnoty. Text zadání, výstupy modelu, parametry a odpovědi nástrojů se do něj nekopírují. Chybějící nebo neplatný závěrečný řádek se zaznamená se stavem `audit_neuplny`. Podrobný audit lze vyžádat zvlášť do `.runs/<run_id>/audit.md`. Git složku `.runs/` ignoruje.
+## Verze
 
-## Oprávnění k akcím
-
-Projekt ve výchozím nastavení používá sandbox pouze pro čtení a předává žádosti o rozšíření oprávnění uživateli. Vestavěné aplikace a pluginy jsou ve výchozím projektu vypnuté. Když úkol vyžaduje zápis, odeslání nebo nasazení, musí běžet s oprávněním pro určený cíl. Ověřovatel přitom dál rozhoduje pouze o kvalitě výstupu.
-
-Pokud host dědí vlastní MCP servery, jejich přístup vynucuje správce hostu v `requirements.toml` a cílová služba. Prázdná spravovaná tabulka `[mcp_servers]` servery vypne, případně správce povolí konkrétní server a omezí jeho účet či nástroje. Pro neobcházené omezení sandboxu používej také spravovanou konfiguraci hostu. [Schvalování nástrojů](https://learn.chatgpt.com/docs/agent-approvals-security) · [Spravovaná oprávnění a MCP](https://learn.chatgpt.com/docs/enterprise/security-cookbook#allow-only-approved-mcp-servers)
-
-## Nová implementace na Windows nebo Linuxu
-
-Použij [vzor projektové specifikace](templates/project-spec.md) pro role, čtení PDF a přejímku. Spouštěč `python testing/start_sandbox.py` (na Linuxu `python3`) vybírá MXC na Windows a používá Bubblewrap na Linuxu a WSL2. Kontrolu startu bez modelu spustíš s `--check`. Podmínky hostitele a ověření jsou v [návodu k testování](docs/TESTING.md#přenositelný-sandbox-pro-nové-implementace).
-
-Pro posouzení místních regresí lze přidat [Testera implementace](docs/TESTING.md#interní-testy-implementace).
+Verzi najdeš v [VERSION](VERSION). Historii změn obsahuje
+[CHANGELOG.md](CHANGELOG.md); plán a původní Codex přejímky jsou v
+[docs/ROADMAP.md](docs/ROADMAP.md).

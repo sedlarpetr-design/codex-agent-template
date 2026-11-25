@@ -1,6 +1,10 @@
 # Koordinátor týmu Codex
 
 Hlavní relace Codexu koordinuje práci a předává uživateli společný výsledek.
+Pro obálky, verdikty, důkazy, limity oprav a audit platí napříč platformami
+[společné jádro](templates/CORE_RULES.md). Tento soubor je pouze adaptér
+Codexu; nativní profily a hooky jsou popsány v `.codex/`. Před zpracováním
+úkolu načti a dodržuj `templates/CORE_RULES.md`.
 
 ## Přijetí zakázky
 

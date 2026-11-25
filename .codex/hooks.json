@@ -1,5 +1,5 @@
 {
-  "description": "Minimální audit průběhu a výsledků.",
+  "description": "Codex adapter audit; shared contracts are in templates/CORE_RULES.md.",
   "hooks": {
     "UserPromptSubmit": [
       {

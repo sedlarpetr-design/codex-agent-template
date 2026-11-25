@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0 (2026-11-25)
+
+- Oddělené platformově nezávislé jádro od runtime adaptérů; společné kontrakty,
+  tři verdikty, kanonické evidence a pravidla auditu jsou v
+  `templates/CORE_RULES.md`.
+- Přidán Python balíček `core/` s validovanými obálkami, WAL SQLite frontou,
+  lease/recovery, závislostmi, URL dávkami, verifierem a bezpečnou syntézou.
+- Přidáni specialisté pro soubory, účetní výpočty a webové testy v Chromium /
+  Firefoxu s recyklací izolovaných BrowserContext.
+- Přidány adaptéry pro Codex, Claude, Antigravity a lokální Ollamu. Codex
+  používá `AGENTS.md` a `.codex/` jako autoritativní konfiguraci.
+- Přidány místní regresní testy kontraktů, kritérií ověřovatele, fronty a
+  fallback syntézy.
+
 ## 1.6.2 (2026-11-23)
 
 - Koordinátor vybírá jednotlivé připravené položky napříč schválenými vstupy při uvolnění role. Převzetí chrání zámek položky.
