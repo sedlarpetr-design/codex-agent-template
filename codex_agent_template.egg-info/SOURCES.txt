@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+codex_agent_template.egg-info/PKG-INFO
+codex_agent_template.egg-info/SOURCES.txt
+codex_agent_template.egg-info/dependency_links.txt
+codex_agent_template.egg-info/requires.txt
+codex_agent_template.egg-info/top_level.txt
+core/__init__.py
+core/coordinator.py
+core/envelopes.py
+core/synthesizer.py
+core/verifier.py
+specialists/__init__.py
+specialists/accounting.py
+specialists/files.py
+specialists/web_test.py
