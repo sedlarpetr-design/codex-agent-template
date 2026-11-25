@@ -1,0 +1,37 @@
+schema_version: "1.0"
+runtime: local_ollama
+memory_target_gb: 10
+coordinator:
+  mode: fixed
+queue:
+  parallelism: 1
+  paused: false
+  roles:
+    overovatel: 1
+  resources:
+    browser: 1
+    verify_cpu: 1
+    llm: 1
+  reserve_verify_cpu: false
+verification:
+  retries:
+    substantive: 2
+    technical: 2
+    needs_evidence: 1
+llm_routing:
+  defaults:
+    provider: local
+    model: qwen3.5:4b
+    max_tokens: 1200
+  roles:
+    planner:
+      provider: local
+      model: qwen3.5:4b
+      max_tokens: 1500
+    verifier_content:
+      provider: local
+      model: qwen3.5:4b
+    synthesizer:
+      provider: local
+      model: qwen3.5:4b
+      max_tokens: 2500

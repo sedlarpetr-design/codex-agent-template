@@ -1,4 +1,36 @@
-# Testování V1.0
+# Testování a přejímka
+
+## Platformově nezávislé jádro 2.0.0
+
+Jádro V2.0.0 je ověřitelné lokálně bez přihlášení k AI runtime nebo síti.
+Standardním příkazem z kořene repozitáře je:
+
+```text
+python -X utf8 -m unittest discover -s testing/tests -v
+```
+
+Regresní sada zahrnuje:
+
+- tři výsledkové cesty pro každé povinné kritérium ověřovatele (doložené
+  splnění, doložené porušení a chybějící důkaz);
+- SQLite WAL frontu, zámek `(task, role)`, lease a recovery, kaskádové
+  blokování závislostí, uzavírání URL podúloh a přechod
+  `verify_cpu` → `verify_content`;
+- Decimal výpočty, kontrolu souborů, podporu Chromium/Firefox a recyklaci
+  BrowserContext;
+- kontrolu referencí syntézy, hlášení mezer a strukturovaný fallback.
+
+Webový adaptér vyžaduje volitelný balíček Playwright a instalaci prohlížeče
+v cílovém prostředí. Ostatní lokální testy využívají pouze standardní
+knihovnu. Nativní přejímka AI runtime zůstává oddělená od lokálních testů:
+musí ověřit skutečné profily, předávky, oprávnění, výsledné obálky a audit
+v daném hostiteli. Přítomnost adaptéru nebo runneru sama o sobě tuto přejímku
+nedokládá.
+
+Společná pravidla kontraktů jsou v
+[templates/CORE_RULES.md](../templates/CORE_RULES.md), implementační detail
+je v [SPECIFICATION_V2.md](SPECIFICATION_V2.md). Níže uvedené výsledky a
+postupy V1 jsou historickým dokladem Codex přejímek původního adaptéru.
 
 V1.0 používá hlavní relaci Codexu a stávající nativní profily `analytik` a `overovatel`. Runner čte soubory jednoho čistého Git commitu a vytvoří samostatný dočasný repozitář pro každý pokus. Vstupy scénářů jsou fiktivní. Do repozitáře pokusu přecházejí jen vyjmenované instrukce, profily, konfigurace a auditní hook.
 

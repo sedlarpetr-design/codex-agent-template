@@ -22,6 +22,7 @@ AGENT_FILES = (
     ".codex/hooks/audit.py",
     ".codex/agents/analytik.toml",
     ".codex/agents/overovatel.toml",
+    "templates/CORE_RULES.md",
     "templates/task.md",
     "templates/assignment.md",
     "templates/result.md",

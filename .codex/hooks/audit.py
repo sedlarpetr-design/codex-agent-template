@@ -1,4 +1,4 @@
-"""Store metadata from trusted Codex hooks without copying task content."""
+"""Codex audit adapter for the shared contracts; never copy task content."""
 
 import json
 import os

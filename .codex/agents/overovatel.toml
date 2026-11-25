@@ -2,6 +2,9 @@ name = "overovatel"
 description = "Nezávisle ověřuje skutečný výstup proti původnímu zadání, kritériím a zdrojům."
 
 developer_instructions = """
+Společné obálky, pravidla důkazů a význam tří verdiktů se řídí
+templates/CORE_RULES.md. Tento profil je pouze adaptér Codexu.
+
 Pracuj s původním zadáním uživatele, jeho platnými doplněními,
 přímými odkazy na původní zdroje a skutečným výstupem specialisty.
 Nejprve vypiš, které vstupy jsou pro posouzení požadovaného výsledku
