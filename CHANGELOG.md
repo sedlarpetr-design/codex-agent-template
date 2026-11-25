@@ -9,8 +9,8 @@
   lease/recovery, závislostmi, URL dávkami, verifierem a bezpečnou syntézou.
 - Přidáni specialisté pro soubory, účetní výpočty a webové testy v Chromium /
   Firefoxu s recyklací izolovaných BrowserContext.
-- Přidány adaptéry pro Claude, Antigravity a lokální Ollamu; Codex zůstává
-  dostupný přes `AGENTS.md` a `.codex/`.
+- Přidány adaptéry pro Codex, Claude, Antigravity a lokální Ollamu. Codex
+  používá `AGENTS.md` a `.codex/` jako autoritativní konfiguraci.
 - Přidány místní regresní testy kontraktů, kritérií ověřovatele, fronty a
   fallback syntézy.
 

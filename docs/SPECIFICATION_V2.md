@@ -1857,26 +1857,26 @@ LEFT JOIN job j
 * **Vnější akce a safe\_to\_retry (§ 9.3–9.4, § 13):** U čtení a čistých výpočtů lze opakovat v mezích limitů; u kroků s vedlejším účinkem (např. odeslání e-mailu nebo externí zápis) musí kód před nastavením safe\_to\_retry=True ověřit skutečný stav / idempotenci venku, jinak bezpečně eskaluje/uzavře jako neověřené.  
 * **JSONL logování, kalibrace kritérií a přejímkové scénáře (§ 9.5, § 11–13):** Každý krok se loguje na jeden řádek JSONL (ts, task\_id, step\_id, attempt, phase, input\_hash, verdict, retry\_class, duration\_ms, tokeny a model/provider). Nová kritéria se zavádějí nejdříve jako required=False a po ověření se povyšují; NESPLNĚNO řeší věcnou/technickou stránku, zatímco NEOVĚŘENO signalizuje problémy prostředí/důkazů. Přejímka ověří změnu konfigurace za běhu, pauzu, zámek (task, role), odmítnutí pozdního zápisu, souběh verify\_cpu vs. verify\_content, recover() po vypršení lease, kaskádové blokování závislostí (needs\_pass=1), stav po restartu DB, recyklaci BrowserContext a kontroly syntézy.
 
-## **16\. Platformová nezávislost a adaptéry pro různé AI runtime**
+## **16. Platformová nezávislost a adaptéry pro různé AI runtime**
 
 Šablona je navržena jako platformově neutrální základ (kontrakty, obálky, SQLite fronta, dvouvrstvý ověřovatel a syntetizátor jsou nezávislé na konkrétním AI nástroji). Stejný návrh lze použít napříč různými AI prostředími – od Codexu přes Claude / Claude Code a Antigravity až po lokální modely v Ollamě nebo vlastní skripty.
 
 ### **16.1 Podmíněné pokyny pro LLM podle aktivního prostředí**
 
 Při spuštění v konkrétním nástroji se LLM řídí podle dostupných schopností daného prostředí:
-
-* **Pokud běžíš v Codexu:** Využij nativní podagenty/profily a projektové hooky (např. zápis stručného auditu do .runs/.../audit.jsonl), respektuj výchozí oprávnění pouze pro čtení a při delegování na specializované role drž úzký kontrakt vstupu a výstupu.
-
-* **Pokud běžíš v Claude / Claude Code:** Využij dostupné nástroje pro čtení/úpravy souborů, spouštění příkazů a subagenty/tasky dle nastavení relace; výstupy kroků vracej strukturovaně s doloženými podklady a rozlišuj ověřená fakta od neověřených odhadů.
-
-* **Pokud běžíš v Antigravity:** Využij dostupné workspace nástroje, artefakty a subagenty/úkoly daného prostředí při dodržení společných rules a obálek (TaskEnvelope, ResultEnvelope, Verdict, Deliverable); měřitelné kroky deleguj na sdílené nástroje a kód, stav ukládej mimo kontext modelu a rozlišuj ověřená fakta od neověřených odhadů.
-
-* **Pokud běžíš přes lokální CLI / Ollamu nebo jiný runner:** Spoléhej na deterministický Python kód a SQLite frontu (stav, zámky, limity a ověřování kódem), drž krátký kontext a nízkou teplotu (0.0–0.2) u plánování a ověřování a neukládej stav do paměti modelu.
+- **Pokud běžíš v Codexu:** Využij nativní podagenty/profily a projektové hooky (např. zápis stručného auditu do `.runs/.../audit.jsonl`), respektuj výchozí oprávnění pouze pro čtení a při delegování na specializované role drž úzký kontrakt vstupu a výstupu.
+- **Pokud běžíš v Claude / Claude Code:** Využij dostupné nástroje pro čtení/úpravy souborů, spouštění příkazů a subagenty/tasky dle nastavení relace; výstupy kroků vracej strukturovaně s doloženými podklady a rozlišuj ověřená fakta od neověřených odhadů.
+- **Pokud běžíš v Antigravity:** Využij dostupné workspace nástroje, artefakty a subagenty/úkoly daného prostředí při dodržení společných rules a obálek (`TaskEnvelope`, `ResultEnvelope`, `Verdict`, `Deliverable`); měřitelné kroky deleguj na sdílené nástroje a kód, stav ukládej mimo kontext modelu a rozlišuj ověřená fakta od neověřených odhadů.
+- **Pokud běžíš přes lokální CLI / Ollamu nebo jiný runner:** Spoléhej na deterministický Python kód a SQLite frontu (stav, zámky, limity a ověřování kódem), drž krátký kontext a nízkou teplotu (0.0–0.2) u plánování a ověřování a neukládej stav do paměti modelu.
 
 ### **16.2 Co zůstává společné napříč platformami**
+- **Obálky a identifikátory:** `TaskEnvelope`, `ResultEnvelope`, `Verdict` a `Deliverable` se všemi identifikátory (`task_id`, `step_id`, `attempt`) a důkazy (`evidence`).
+- **Ověřování a stropy:** Co lze ověřit kódem, ověřuje kód; každý krok a smyčka má pevný strop pokusů/tokenů a po vyčerpání končí jako neověřený (`NEOVĚŘENO` / `gaps`), nikoliv potichu jako úspěšný.
+- **Izolace a audit:** Výchozí opatrnost vůči zápisům a vnějším akcím, oddělení oprávnění od hodnocení kvality a sledování neúplných běhů.
 
-* **Obálky a identifikátory:** TaskEnvelope, ResultEnvelope, Verdict a Deliverable se všemi identifikátory (task\_id, step\_id, attempt) a důkazy (evidence).
+### **16.3 Kanálové adaptéry (Slack, Microsoft Teams) a napojení na frontu**
 
-* **Ověřování a stropy:** Co lze ověřit kódem, ověřuje kód; každý krok a smyčka má pevný strop pokusů/tokenů a po vyčerpání končí jako neověřený (NEOVĚŘENO / gaps), nikoliv potichu jako úspěšný.
-
-* **Izolace a audit:** Výchozí opatrnost vůči zápisům a vnějším akcím, oddělení oprávnění od hodnocení kvality a sledování neúplných běhů.
+Komunikační kanály (Slack, Microsoft Teams) nejsou součástí jádra ani samostatnými orchestrátory, ale fungují jako volitelné vstupně-výstupní adaptéry nad společnou SQLite frontou a kontrakty (§ 3, § 9).
+- **Tok dat a kontrakty:** Kanálový adaptér přijme požadavek z konverzace, přeloží ho na vstupní obálku (`TaskEnvelope`), zařadí do fronty (`job`) a průběžné stavy či finální výstup (`Deliverable` / `Verdict`) vrací zpět do původního vlákna (např. přes Slack Bolt / Socket Mode v lokálním pilotu nebo přes registraci aplikace a Adaptive Cards v Teams).
+- **Identita, tenanti a oprávnění na straně serveru:** Kontext tenanta, kanálu, vlákna a uživatelských oprávnění se vždy odvozuje z ověřené identity a registrace v adaptéru na straně serveru – nikdy z textu uživatelské zprávy.
+- **Idempotence a vnější akce:** Odeslání zprávy do kanálu, schvalovací interakce i zápisy přes konektory / MCP podléhají pravidlům pro vnější akce (§ 10.1, § 15.6) – před opakováním po výpadku se ověří skutečný stav a vyžaduje se jednorázové potvrzení s expirací u rizikových akcí.

@@ -43,7 +43,8 @@ modelu, sítě ani AI CLI.
 ## Runtime adaptéry
 
 - **Codex:** otevři repozitář a řiď se [AGENTS.md](AGENTS.md); hooky a profily
-  jsou v `.codex/`. Výchozí sandbox zůstává pouze pro čtení.
+  jsou v `.codex/`; přehled adaptéru je v [adapters/codex/](adapters/codex/).
+  Výchozí sandbox zůstává pouze pro čtení.
 - **Claude / Claude Code:** viz [CLAUDE.md](CLAUDE.md) a
   [adapters/claude/](adapters/claude/).
 - **Antigravity:** viz [ANTIGRAVITY.md](adapters/antigravity/ANTIGRAVITY.md).
