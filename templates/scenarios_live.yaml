@@ -1,197 +1,246 @@
-catalog_id: live-web-ai-scenarios-v2
-version: "2.0.0"
-default_browser: chromium
-
-profiles:
-  basic:
-    include_levels: [basic]
-  extended:
-    include_levels: [basic, extended]
-  full:
-    include_levels: [basic, extended, optional]
-
-sitemap:
-  enabled: true
-  paths:
-    - /sitemap.xml
-    - /sitemap_index.xml
-  sample_limit_per_type: 5
+version: "2.2.0"
+catalog: scenarios_live
+description: "Kompletni katalog 24 zivych webovych a AI testovacich scenaru"
 
 scenarios:
+  - id: MAP-01
+    level: basic
+    site_types: [any]
+    sitemap_mode: fetch_root
+    title: "Mapa webu (robots.txt a sitemap.xml)"
+    check: map_01_sitemap_discovery
+    steps:
+      - action: goto
+        target: /robots.txt
+      - action: goto
+        target: /sitemap.xml
+
   - id: SEO-01
     level: basic
     site_types: [any]
-    title: Základní SEO metadata a kanonická URL
-    checks_cpu: [http_status_200, seo_basics_valid]
+    sitemap_mode: subset_from_sitemap
+    title: "Zakladni SEO metadata a kanonicka URL"
+    check: seo_01_metadata_canonical
     steps:
-      - step_id: open_home
-        step: Otevřít titulní stránku
-        action: goto
+      - action: goto
         target: /
 
   - id: SEO-02
     level: extended
     site_types: [any]
-    title: Robots.txt a dostupnost sitemapy
-    checks_cpu: [http_status_200]
+    sitemap_mode: uses_sitemap
+    title: "Robots.txt a dostupnost sitemapy"
+    check: seo_02_robots_sitemap
     steps:
-      - step_id: fetch_robots
-        step: Načíst robots.txt
-        action: goto
+      - action: goto
         target: /robots.txt
-      - step_id: fetch_sitemap
-        step: Načíst sitemap.xml
-        action: goto
-        target: /sitemap.xml
 
-  - id: SEARCH-01
+  - id: SEO-03
     level: extended
-    site_types: [any, shop]
-    title: Interní vyhledávání – platný dotaz a nulový výsledek
-    checks_cpu: [steps_passed, scenario_covered]
+    site_types: [any, presentation]
+    sitemap_mode: subset_from_sitemap
+    title: "Struktura nadpisu H1-H3 a alt texty obrazku"
+    check: seo_03_headings_alt
     steps:
-      - step_id: open_search
-        step: Otevřít úvodní stránku s vyhledáváním
-        action: goto
+      - action: goto
         target: /
-      - step_id: query_valid
-        step: Vyhledat existující výraz
-        action: fill_submit
-        target: "input[type='search'], input[name='q'], input[name='s']"
-        value: "{{valid_query}}"
-      - step_id: query_empty
-        step: Vyhledat neexistující výraz
-        action: fill_submit
-        target: "input[type='search'], input[name='q'], input[name='s']"
-        value: "zzznonexistentquery98765"
+
+  - id: SEO-04
+    level: extended
+    site_types: [any, presentation]
+    sitemap_mode: single_from_sitemap
+    title: "Strukturovana data Schema.org (JSON-LD)"
+    check: seo_04_structured_data
+    steps:
+      - action: goto
+        target: /
 
   - id: AI-01
     level: extended
-    site_types: [any, shop, presentation]
-    title: AI-Search připravenost (llms.txt a strukturovaná citovatelnost)
-    checks_cpu: [ai_search_llms_txt]
+    site_types: [any, presentation, shop]
+    sitemap_mode: fetch_root
+    title: "AI-Search pripravenost (/llms.txt a citovatelnost)"
+    check: ai_01_llms_txt
     steps:
-      - step_id: check_llms_txt
-        step: Ověřit dostupnost /llms.txt
-        action: goto
+      - action: goto
         target: /llms.txt
-      - step_id: check_structured_page
-        step: Načíst stránku pro kontrolu JSON-LD a struktury citací
-        action: goto
+
+  - id: AI-02
+    level: extended
+    site_types: [any, presentation]
+    sitemap_mode: subset_from_sitemap
+    title: "Semanticka citovatelnost obsahu a odpovedi na klicove dotazy"
+    check: ai_02_citability
+    steps:
+      - action: goto
         target: /
 
   - id: UX-01
     level: basic
     site_types: [any, presentation]
-    title: Hlavní navigace a primární výzva k akci (CTA)
-    checks_cpu: [steps_passed, scenario_covered]
+    sitemap_mode: single_from_sitemap
+    title: "Hlavni navigace a primarni vyzva k akci (CTA)"
+    check: ux_01_nav_cta
     steps:
-      - step_id: open_landing
-        step: Načíst vstupní stránku
-        action: goto
+      - action: goto
+        target: /
+
+  - id: UX-02
+    level: basic
+    site_types: [any, presentation]
+    sitemap_mode: subset_from_sitemap
+    title: "Kontaktni udaje a dostupnost klicovych podstranek"
+    check: ux_02_contacts_pages
+    steps:
+      - action: goto
+        target: /
+
+  - id: UX-03
+    level: extended
+    site_types: [any, presentation]
+    sitemap_mode: subset_from_sitemap
+    title: "Kontrola rozbitych internich odkazu (4xx/5xx)"
+    check: ux_03_broken_links
+    steps:
+      - action: goto
+        target: /
+
+  - id: UX-04
+    level: extended
+    site_types: [presentation]
+    sitemap_mode: single_from_sitemap
+    title: "Kontaktni / poptavkovy formular – validace bez odeslani"
+    check: ux_04_contact_form_validation
+    steps:
+      - action: goto
         target: /
 
   - id: UX-09
     level: extended
     site_types: [any]
-    title: Cookie lišta – odmítnutí bez vynucení souhlasu
-    checks_cpu: [security_and_cookies_ok]
+    sitemap_mode: single_from_sitemap
+    title: "Cookie lista – odmitnuti bez vynuceni souhlasu"
+    check: ux_09_cookie_reject
     steps:
-      - step_id: open_clean_session
-        step: Otevřít web v čistém kontextu
-        action: goto
+      - action: goto
         target: /
-      - step_id: reject_cookies
-        step: Odmítnout volitelné cookies
-        action: click
-        target: "[data-cookie-reject], button.reject-all, button.cookie-decline"
 
   - id: I18N-01
     level: extended
     site_types: [any]
-    title: Deklarace jazyka dokumentu a hreflang vazby
-    checks_cpu: [i18n_and_currency_consistent]
+    sitemap_mode: subset_from_sitemap
+    title: "Deklarace jazyka dokumentu a hreflang vazby"
+    check: i18n_01_lang_hreflang
     steps:
-      - step_id: inspect_locale_home
-        step: Načíst výchozí jazykovou mutaci
-        action: goto
+      - action: goto
         target: /
 
   - id: I18N-02
     level: optional
     site_types: [any]
-    title: Přepínač jazyků a konzistence překladu rozhraní
-    checks_cpu: [i18n_and_currency_consistent]
+    sitemap_mode: single_from_sitemap
+    title: "Prepinac jazyku a konzistence prekladu rozhrani"
+    check: i18n_02_language_switcher
     steps:
-      - step_id: open_default_lang
-        step: Otevřít výchozí jazyk
-        action: goto
+      - action: goto
         target: /
-      - step_id: switch_lang
-        step: Přepnout na sekundární jazykovou mutaci
-        action: click
-        target: "[data-lang-switch], a[hreflang]"
-
-  - id: CURR-01
-    level: extended
-    site_types: [shop]
-    title: Formát měny a konzistence cen v katalogu
-    checks_cpu: [i18n_and_currency_consistent]
-    steps:
-      - step_id: open_catalog
-        step: Otevřít katalog produktů
-        action: goto
-        target: "{{catalog_path}}"
-
-  - id: CURR-02
-    level: optional
-    site_types: [shop]
-    title: Přepnutí měny a přepočet košíku
-    checks_cpu: [i18n_and_currency_consistent]
-    steps:
-      - step_id: switch_currency
-        step: Změnit měnu na EUR
-        action: click
-        target: "[data-currency='EUR'], select[name='currency']"
-
-  - id: SHOP-02
-    level: extended
-    site_types: [shop]
-    title: Průchod z detailu produktu do košíku bez odeslání objednávky
-    deny_actions: [submit_order, payment]
-    checks_cpu: [steps_passed, scenario_covered]
-    steps:
-      - step_id: open_product
-        step: Otevřít detail dostupného produktu
-        action: goto
-        target: "{{product_path}}"
-      - step_id: add_to_cart
-        step: Vložit položku do košíku
-        action: click
-        target: "button.add-to-cart, [data-action='add-to-cart']"
 
   - id: SEC-01
     level: basic
     site_types: [any]
-    title: HTTPS přesměrování a základní bezpečnostní hlavičky
-    checks_cpu: [security_and_cookies_ok]
+    sitemap_mode: single_from_sitemap
+    title: "HTTPS presmerovani a zakladni bezpecnostni hlavicky"
+    check: sec_01_https_headers
     steps:
-      - step_id: check_security
-        step: Načíst stránku přes HTTPS a zachytit hlavičky
-        action: goto
+      - action: goto
+        target: /
+
+  - id: SEC-02
+    level: extended
+    site_types: [any]
+    sitemap_mode: single_from_sitemap
+    title: "Bezpecnostni atributy cookies a mixed-content kontrola"
+    check: sec_02_cookies_mixed_content
+    steps:
+      - action: goto
         target: /
 
   - id: PERF-01
     level: optional
     site_types: [any]
-    title: Základní metriky načtení (TTFB, DOMContentLoaded, velikost přenosu)
-    checks_cpu: [perf_within_budget]
-    thresholds:
-      max_ttfb_ms: 1200
-      max_dom_loaded_ms: 3500
-      max_transfer_kb: 3072
+    sitemap_mode: subset_from_sitemap
+    title: "Zakladni metriky nacteni (TTFB, DOMContentLoaded, velikost prenosu)"
+    check: perf_01_load_metrics
     steps:
-      - step_id: measure_perf
-        step: Změřit časování načtení titulní stránky
-        action: goto
+      - action: goto
+        target: /
+
+  - id: SEARCH-01
+    level: extended
+    site_types: [shop]
+    sitemap_mode: single_from_sitemap
+    title: "Interni vyhledavani – platny dotaz a nulovy vysledek"
+    check: search_01_internal_search
+    steps:
+      - action: goto
+        target: /
+
+  - id: CURR-01
+    level: extended
+    site_types: [shop]
+    sitemap_mode: subset_from_sitemap
+    title: "Format meny a konzistence cen v katalogu"
+    check: curr_01_currency_format
+    steps:
+      - action: goto
+        target: /
+
+  - id: CURR-02
+    level: optional
+    site_types: [shop]
+    sitemap_mode: single_from_sitemap
+    title: "Prepnutí meny a prepocet kosiku"
+    check: curr_02_currency_switch
+    steps:
+      - action: goto
+        target: /
+
+  - id: SHOP-01
+    level: extended
+    site_types: [shop]
+    sitemap_mode: subset_from_sitemap
+    title: "Detail produktu – dostupnost, cena a varianta"
+    check: shop_01_product_detail
+    steps:
+      - action: goto
+        target: /
+
+  - id: SHOP-02
+    level: extended
+    site_types: [shop]
+    sitemap_mode: single_from_sitemap
+    title: "Pruchod z detailu produktu do kosiku bez odeslani objednavky"
+    check: shop_02_add_to_cart
+    steps:
+      - action: goto
+        target: /
+
+  - id: SHOP-03
+    level: extended
+    site_types: [shop]
+    sitemap_mode: single_from_sitemap
+    title: "Doprava, platba a obchodni podminky v kosiku"
+    check: shop_03_checkout_info
+    steps:
+      - action: goto
+        target: /
+
+  - id: SHOP-04
+    level: optional
+    site_types: [shop]
+    sitemap_mode: single_from_sitemap
+    title: "Filtrace a razeni v kategorii produktu"
+    check: shop_04_catalog_filter
+    steps:
+      - action: goto
         target: /
