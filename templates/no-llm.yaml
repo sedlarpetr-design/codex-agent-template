@@ -1,0 +1,53 @@
+profile_id: no-llm-deterministic-v2
+task: "Deterministické spuštění scénářů a kódové ověření bez LLM tokenů"
+language: cs
+
+coordinator:
+  mode: fixed
+  batch_size: 5
+  browser_restart_every_urls: 25
+  url_timeout_sec: 90
+  llm_planner:
+    enabled: false
+    max_plan_tokens: 0
+    max_plan_repairs: 0
+
+llm_routing:
+  defaults:
+    provider: none
+    model: null
+    max_tokens: 0
+
+specialists:
+  - name: tester_webu
+    kind: web_test
+  - name: kontrola_souboru
+    kind: files
+
+verification:
+  mode: cpu_only
+  llm_check: false
+  retries:
+    substantive: 0
+    technical: 2
+    needs_evidence: 1
+
+synthesis:
+  enabled: false
+  format: json
+
+limits:
+  max_steps: 50
+  max_total_tokens: 0
+  max_minutes: 60
+
+queue:
+  parallelism: 1
+  paused: false
+  reserve_verify_cpu: false
+  roles:
+    tester_webu: 1
+    overovatel: 1
+  resources:
+    browser: 1
+    verify_cpu: 1

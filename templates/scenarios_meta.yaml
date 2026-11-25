@@ -1,0 +1,58 @@
+catalog_id: meta-quality-controls-v2
+version: "2.0.0"
+kind: meta_audit
+
+meta_checks:
+  - id: META-01
+    criterion: passage_labels_schema_valid
+    required: true
+    title: Validita struktury štítků a pasáží podkladů
+    check_fn: meta_passage_labels_valid
+
+  - id: META-02
+    criterion: passage_quotes_exact_in_source
+    required: true
+    title: Doslovná shoda citovaných pasáží se zdrojovým textem
+    check_fn: meta_quotes_in_source
+
+  - id: META-03
+    criterion: sbom_and_docs_versions_aligned
+    required: true
+    title: Soulad verzí v SBOM, manifestech a dokumentaci
+    check_fn: meta_sbom_docs_aligned
+
+  - id: META-04
+    criterion: verdict_matches_criteria_rules
+    required: true
+    title: Deterministická konzistence verdiktu (SPLNĚNO / NESPLNĚNO / NEOVĚŘENO)
+    check_fn: meta_verdict_consistent
+
+  - id: META-05
+    criterion: every_claim_has_known_evidence_ref
+    required: true
+    title: Každé tvrzení v reportu má platný odkaz do known_refs
+    check_fn: meta_claims_refs_exist
+
+  - id: META-06
+    criterion: unverified_steps_listed_in_gaps
+    required: true
+    title: Neověřené kroky jsou přiznány v sekci gaps
+    check_fn: meta_gaps_reported
+
+  - id: META-07
+    criterion: model_not_truncated_by_length
+    required: true
+    title: Detekce oříznutí výstupu modelu (done_reason=length)
+    check_fn: meta_no_length_truncation
+
+  - id: META-08
+    criterion: audit_jsonl_properly_closed
+    required: true
+    title: Uzavření běhu v JSONL logu (bez stavu audit_neuplny)
+    check_fn: meta_audit_closed
+
+  - id: META-09
+    criterion: attempts_and_ids_traceable
+    required: false
+    title: Plná dohledatelnost trojice task_id + step_id + attempt
+    check_fn: meta_ids_traceable
