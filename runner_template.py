@@ -1,4 +1,4 @@
-import csv
+﻿import csv
 import importlib.util
 import json
 import sys
@@ -71,11 +71,31 @@ def discover_plugins(plugins_dir: Path, cache: dict) -> dict:
     return found
 
 
+def _load_dotenv_if_present(env_path) -> None:
+    try:
+        from pathlib import Path
+        import os
+        p = Path(env_path)
+        if not p.is_file():
+            return
+        for raw_line in p.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, val = line.split("=", 1)
+            key = key.strip()
+            val = val.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = val
+    except Exception:
+        pass
+
 def main() -> int:
     if len(sys.argv) < 2:
         print("Pouziti: python runner_template.py <profil.yaml>")
         return 2
     root = Path(__file__).resolve().parent
+    _load_dotenv_if_present(root / ".env")
     cfg_path = Path(sys.argv[1])
     if not cfg_path.is_absolute():
         cfg_path = root / cfg_path
@@ -135,3 +155,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
