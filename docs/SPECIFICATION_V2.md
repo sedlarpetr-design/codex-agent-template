@@ -362,6 +362,8 @@ Výpočty provádí kód s Decimal. LLM nikdy neprovádí aritmetiku, jen třeba
 
 ### **5.6 Přidání nového specialisty**
 
+Každý běh vychází z konfiguračního YAML profilu. Spouštěč před startem smyčky ověří a zaloguje vstupní dávku (`nacteno`, `limit` kde `0` = celý set bez ořezu, `sample_mode` v režimech `strided` / `head` / `all` a `vybrano`), dynamicky načte cílový plugin ze složky `plugins/*.py` podle metadat `PLUGIN_META` (`name`, `version`, `description`, `capabilities`) s podporou reloadu při změně `mtime` a průběžně zapisuje výstupy na disk (`flush()`). Při předčasném ukončení se zapíše stav `audit_neuplny`, při řádném dokončení `run_closed` (`status: "ok").
+
 1. Definovat vstupní a výstupní schéma pro nový kind.  
 2. Napsat třídu s metodou work.  
 3. Zaregistrovat plugin kontrol pro tento kind (sekce 6).  
@@ -620,6 +622,11 @@ def quotes\_in\_source(out, ctx):
     return met('quotes\_in\_source', \[e\['ref'\] for e in quotes\])
 
 ### **6.3 Pluginy pro jednotlivé typy specialistů**
+
+Ověřovací plugin odděluje rychlou deterministickou kontrolu (`evaluate_layer1`) od kontextového posouzení lokálním modelem (`evaluate_layer2_llm`, volaným jen při anomálii přes `only_when_anomaly: true`).
+
+- **Stavové přepínání (`skip_already_active` vs. `reset_to_base`):** `skip_already_active` potlačuje falešné anomálie u položek již aktivních ve výchozím stavu; `reset_to_base` obnovuje výchozí URL/stav po provedeném přepnutí před dalším krokem.
+- **Odolnost vůči thinking modelům:** Extrakce verdiktu hledá řádek `VERDIKT:`, čte `response` i `thinking`, filtruje hlavičky uvažování i opakování zadání a vrací explicitní stavy (`LLM_SKIPPED`, `LLM_OK`, `LLM_EMPTY`, `LLM_ERR`).
 
 Číselná kontrola přijímá normalizované dvojice hodnota a jednotka nebo explicitní formát zdroje a výstupu (source\_number\_locale a output\_number\_locale). Ukázkový parser pokrývá cs a en se známými jednotkami. Nejednoznačné formáty se předají k posouzení. Porovnání je předběžná kontrola výskytu hodnot. Věcnou vazbu údaje na tvrzení posoudí odpovídající kritérium.
 

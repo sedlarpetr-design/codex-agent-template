@@ -57,3 +57,13 @@ Vydání přidává jednotný report pro projektová kritéria, pravidlo pro chy
 | Distribuce | **Odloženo do V2.0.** Prověř uzamčení závislostí a ověřitelnost vydaných artefaktů. Podle způsobu distribuce posuď podpis a SBOM. |
 | MCP | **Odloženo do V2.0.** Posuď MCP u prvního konkrétního konektoru navrženého pro tento způsob integrace. Stanov mu vlastní politiku oprávnění. |
 | Provozní telemetrie | **Odloženo do V2.0.** Posuď OpenTelemetry podle provozních potřeb a podle toho, jaké signály lze sbírat s ohledem na pravidla ochrany dat. |
+
+
+## Kapitola 18 — Ověřené vzory z webového auditu a přenos do šablony
+
+- **18.1.1 Dvouvrstvý ověřovač přes plugin (`evaluate_layer1` -> `evaluate_layer2_llm`):** `[HOTOVO]` — deterministická vrstva běží jako první, `skip_already_active` je podporováno a LLM vrstva se volá jen při anomálii.
+- **18.1.2 Rozšiřitelný spouštěč přes YAML profil a auto-discovery pluginů (`plugins/*.py` s `PLUGIN_META`):** `[HOTOVO]` — dynamické načítání pluginů, `PLUGIN_META` a reload při změně `mtime`.
+- **18.1.3 Odolné čtení výstupu lokálních thinking modelů:** `[HOTOVO]` — čtení `response` i `thinking`, filtrace hlaviček a ozvěn zadání (`VERDIKT:`), stavy `LLM_SKIPPED`, `LLM_OK`, `LLM_EMPTY`, `LLM_ERR`.
+- **18.1.4 Průběžný zápis výsledků a real-time výstup:** `[HOTOVO]` — okamžitý `flush()` do výstupů a uzavření `audit_neuplny` při přerušení.
+- **18.1.5 Validace vstupní dávky a limitů před startem běhu:** `[HOTOVO]` — logování `nacteno`, `limit`, `sample_mode` a `vybrano` před spuštěním smyčky.
+- **18.1.6 Stavové přepínání a návrat na výchozí stav (`skip_already_active` vs. `reset_to_base`):** `[HOTOVO v šabloně]` — sjednoceno v dokumentaci i šablonách profilu a pluginu.

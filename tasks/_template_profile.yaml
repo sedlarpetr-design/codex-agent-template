@@ -1,0 +1,15 @@
+source:
+  urls_file: tasks/general/inputs.txt
+  limit: 0
+  sample_mode: strided
+
+verifier:
+  plugin: _template_plugin
+  only_when_anomaly: true
+  skip_already_active: true
+  reset_to_base: true
+
+output:
+  dir: runs/template-run-01
+  csv: results.csv
+  log: diag.txt
